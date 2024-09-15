@@ -1,0 +1,198 @@
+
+
+body{
+    display: flex;
+    flex-direction: column;
+    background-image: url("./assets/tavern.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    background-position: 0% 70%;
+    background-attachment: fixed;
+    align-items: center;
+    background-color: burlywood;
+    font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+svg{
+    width: auto;
+    height: 130px;
+    color:white;
+    margin-top: -30px;
+}
+
+.name-bg{
+    background-image: url("./assets/wooden-floor-1557123_1920.jpg");
+    width: 100%;
+}
+
+.name{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+    font-family: magicFont, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #ff6200;
+    font-size: 5rem;
+    background-color: rgb(0,0,0,0.5);
+    border: 5px solid black;
+    padding: 10px;
+    border-bottom: 20px solid black;
+
+}
+
+nav{
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    align-items: start;
+    min-height: 100px;
+    width: max(55%, 700px);
+    /* background-color: rgb(0,0,0,0.7); */
+}
+
+button{
+    background-color: black;
+    color: #ff6200;
+    border: 0;
+    border-bottom: 1px solid white;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 20px;
+    font-size: 1.8rem;
+    align-self: flex-start;
+    height: 80px;
+    font-family: magicFont, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;;
+
+}
+
+button:hover{
+    text-shadow: 0px 10px 6px #ff6200;
+}
+button:active{
+    height: 100px;
+    border-bottom: 1px solid #ff6200;
+}
+
+#content{
+    width: max(55%, 700px);
+    background-color: rgb(0,0,0,0.8);
+    align-self: center;
+    color: #FFFFFF;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 5px #000;
+}
+
+
+.home h1{
+    color: #ff6200;
+    margin-bottom: 0.4rem;
+    text-shadow: 0px -10px 30px #ff6200;
+}
+
+.home p{
+    padding: 20px;
+    border-left: 2px dashed #ff6200;
+    border-right: 2px dashed #ff6200;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 4rem;
+}
+
+.home p:last-child{
+    text-align: center;
+    border: 6px double #fff;
+    box-shadow: 0px 0px 10px 0px #fff inset;
+}
+.home h1:last-of-type{
+    text-align: center;
+}
+
+.home p:last-of-type>span{
+    font-weight: bold;
+    color: #ff6200;
+    font-size: 1.3rem;
+}
+
+.elixir{
+    display: flex;
+    flex-direction: column;
+    gap:20px;
+    
+}
+
+.elixir h1{
+    color: #ff6200;
+    text-shadow: 0px -10px 30px #ff6200;
+    
+}
+
+.elixir>div{
+    display: flex;
+    flex-direction: column;
+    border: 2px dashed #ff6200;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    gap: 20px;
+}
+
+.elixir>div>div{
+    display: flex;
+    padding: 5px;
+    margin-top: 0.4rem;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.elixir>div>div>p{
+    width: 50%;
+    font-weight: bold;
+    color: #ff6200;
+}
+
+.elixir>div>div>.price{
+    text-shadow: 0px -10px 30px #ff6200;
+    background-color: rgb(0,0,0);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.contact>h1>span{
+    
+    text-shadow: 0px -10px 30px #ff6200;
+}
+
+.contact>h1{
+    text-align: center;
+    color: #ff6200;
+    margin-bottom: 0.4rem;
+    
+}
+
+.contact>p{
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+}
+
+.contact>p>span{
+    font-weight: bold;
+    color: #ff6200;
+}
+
+.contact p:last-child{
+    border: 5px double #fff;
+    padding: 20px;
+    border-left: 5px dashed #ff6200;
+    border-right: 5px dashed #ff6200;
+    border-radius: 10px;
+}
+
