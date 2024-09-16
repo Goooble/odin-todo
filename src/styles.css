@@ -25,7 +25,7 @@ aside .default-project{
     gap: 20px;
 }
 
-aside button,aside input{
+aside button,aside input, .project-item{
     color: white;
     background-color: black;
     border: none;

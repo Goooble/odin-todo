@@ -31,6 +31,7 @@ function cleanList(container) {
     });
 }
 
+
 var displayList = (function () {
   function displayTodo(array) {
     cleanList(todoDisplayCont);
@@ -56,6 +57,11 @@ var displayList = (function () {
   return { displayTodo, displayProject };
 })();
 
+function updateProjectHeader(name){
+  const header = document.querySelector("header h1");
+  header.textContent = name;
+}
+
 //for the add button to switch to input after clicked
 function toggleInput() {
 
@@ -65,4 +71,4 @@ function toggleInput() {
   addProjectInput.classList.toggle("show-input");
 }
 
-export { displayList, toggleInput, cleanInputBox };
+export { displayList, toggleInput, cleanInputBox, updateProjectHeader };
