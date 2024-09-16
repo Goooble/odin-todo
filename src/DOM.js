@@ -1,21 +1,28 @@
-const inputBox = document.querySelector("header input");
 const todoDisplayCont = document.querySelector("main");
 const projectListCont = document.querySelector("aside");
 
-function createDisplayTodo() {
+
+//create the element 
+function createDisplayTodo(index) {
   const todoItem = document.createElement("div");
+  todoItem.dataset.index = index;
   todoItem.className = "todo-item";
   return todoItem;
 }
 
-function createDisplayProject() {
-  const projectItem = document.createElement("button");
+function createDisplayProject(index) {
+  const projectItem = document.createElement("div");
+  projectItem.dataset.index = index;
   projectItem.className = "project-item";
   return projectItem;
 }
+
+//clear the input box in quick add and project add after one item has been aded
 function cleanInputBox(inputBox) {
   inputBox.value = "";
 }
+
+//clear the todo and project lists to include new todo's and projects
 function cleanList(container) {
   container
     .querySelectorAll(`.${container.className}>*:not(.default-project, .inbox)`)
@@ -24,22 +31,15 @@ function cleanList(container) {
     });
 }
 
-var displayTodoList = (function () {
+var displayList = (function () {
   function displayTodo(array) {
     cleanList(todoDisplayCont);
-    array.forEach((item) => {
-      var todoItem = createDisplayTodo();
+    array.forEach((item, index) => {
+      var todoItem = createDisplayTodo(index);
       todoItem.textContent = item.getTitle();
       todoDisplayCont.appendChild(todoItem);
     });
   }
-
-  return { displayTodo };
-})();
-
-var displayProjectList = (function () {
-  const addProjectBut = document.querySelector(".add-project-but");
-  const addProjectInput = document.querySelector("aside input");
 
   function displayProject(array) {
     cleanList(projectListCont);
@@ -47,30 +47,22 @@ var displayProjectList = (function () {
       if (index === array.length - 1) {
         return 0;
       }
-      var project = createDisplayProject();
+      var project = createDisplayProject(index);
       project.textContent = item.getProjectName();
       projectListCont.appendChild(project);
     });
   }
 
-  return { displayProject };
+  return { displayTodo, displayProject };
 })();
 
-var addProjectHandler = (function () {
+//for the add button to switch to input after clicked
+function toggleInput() {
+
   const addProjectBut = document.querySelector(".add-project-but");
   const addProjectInput = document.querySelector("aside input");
+  addProjectBut.classList.toggle("show-add-but");
+  addProjectInput.classList.toggle("show-input");
+}
 
-  function toggleInput() {
-    addProjectBut.classList.toggle("show-add-but");
-    addProjectInput.classList.toggle("show-input");
-  }
-
-  return { toggleInput };
-})();
-
-export {
-  displayTodoList,
-  displayProjectList,
-  addProjectHandler,
-  cleanInputBox,
-};
+export { displayList, toggleInput, cleanInputBox };
