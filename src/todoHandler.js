@@ -1,24 +1,26 @@
-const todoCont = [];
+
 
 function todo(title, description = null, date = null, priority = null, project = "inbox"){
     var state = false;
-
+    function getTitle(){
+        return title;
+    }
     function getState(){
         return state;
     }
-    return{getState}
+    return{getState, getTitle}
 }
 
 function createTodo(title, description, date, priority, project){
-    todoCont.unshift(todo(title, description, date, priority, project));
+    return todo(title, description, date, priority, project);
 }
 
-function deleteTodo(todo){
-    todoCont.forEach((item, index) => {
+function deleteTodo(todo, cont){
+    cont.forEach((item, index) => {
         if(item === todo){
-            todoCont.splice(index, 1);
+            cont.splice(index, 1);
         } 
     })
 }
 
-export {todoCont, createTodo, deleteTodo};
+export {createTodo, deleteTodo};
