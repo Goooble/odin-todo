@@ -71,9 +71,7 @@ aside .show-input{
     justify-content: space-between;
 }
 
-.project-item button{
-    
-}
+
 
 header, main, aside{
     padding: 40px;
@@ -89,7 +87,7 @@ header h1{
     font-size: 3rem;
 }
 
-header input{
+header #add-quick{
     padding: 10px;
     border: none;
     border-radius: 10px;
@@ -100,7 +98,7 @@ header input{
 
 }
 
-header input:focus{
+header #add-quick:focus{
     outline: none;
     border-bottom: 2px solid #000;
 }
@@ -136,6 +134,14 @@ header .quick-add-cont{
     gap: 10px;
 }
 
+dialog{
+    margin: auto;
+}
+dialog form{
+    display: flex;
+    flex-direction: column;
+}
+
 main{
     display: flex;
     flex-direction: column;
@@ -149,3 +155,4 @@ main{
     font-size: 1.1rem;
     text-align: start;
 }
+

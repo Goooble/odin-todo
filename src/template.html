@@ -8,13 +8,12 @@
   <body>
     <aside class="aside">
       <div class="default-project">
-      <div class="inbox project-item">Inbox
-      </div>
-      <button class="add-project-but">Add</button>
-      <input type="text" placeholder="Project Name">
+        <div class="inbox project-item">Inbox</div>
+        <button class="add-project-but">Add</button>
+        <input type="text" placeholder="Project Name" />
       </div>
     </aside>
-    
+
     <header>
       <h1>Inbox</h1>
       <div class="quick-add-cont">
@@ -25,14 +24,48 @@
           placeholder="Press Enter to quick add"
         />
       </div>
+      <dialog open>
+        <form action="" method="dialog">
+          <label for="title">Title:</label>
+          <input
+            type="text"
+            id="title"
+            placeholder="Enter the name of the Todo"
+          />
+          <label for="date">Due Date:</label>
+          <input
+            type="date"
+            id="desc"
+          />
+          <label for="priority">Priority:</label>
+          <select name="priority" id="priority">
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+            <option value="null" selected>None</option>
+            
+          </select>
+          <label for="project">Project:</label>
+          <select name="project" id="project">
+            <option value="inbox" selected>Inbox</option>
+            <!-- even selected would need to be updated every round -->
+            <!-- set this up using js including inbox to use index in value-->
+          </select>
+          <label for="notes">Notes:</label>
+          <input
+            type="text"
+            id="notes"
+            placeholder="Enter additional information"
+          />
+
+          <input type="submit">
+          <button class="close-but">Close</button>
+        </form>
+      </dialog>
     </header>
     <main class="main">
-      <div class="todo-item">
-        git gud
-      </div>
-      <div class="todo-item">
-        skill issue
-      </div>
+      <div class="todo-item">git gud</div>
+      <div class="todo-item">skill issue</div>
     </main>
   </body>
 </html>
