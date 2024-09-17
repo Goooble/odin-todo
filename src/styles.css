@@ -25,7 +25,7 @@ aside .default-project{
     gap: 20px;
 }
 
-aside button,aside input, .project-item{
+aside .add-project-but,aside input, .project-item{
     color: white;
     background-color: black;
     border: none;
@@ -33,12 +33,12 @@ aside button,aside input, .project-item{
     font-size: var(--butFont);
 }
 
-aside button:hover {
+aside .add-project-but:hover {
     text-shadow: 0px 0px 5px #fff;
 
 }
 
-aside button:active {
+aside  .add-project-but:active {
     box-shadow: 0px 0px 5px #000;
     
 }
@@ -59,10 +59,20 @@ aside .show-add-but{
 
 aside input{
     display: none;
+    width: 100%;
 }
 
 aside .show-input{
     display: block;
+}
+
+.project-item{
+    display: flex;
+    justify-content: space-between;
+}
+
+.project-item button{
+    
 }
 
 header, main, aside{

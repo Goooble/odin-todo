@@ -9,13 +9,16 @@ function createDisplayTodo(index) {
   todoItem.className = "todo-item";
   return todoItem;
 }
-
-function createDisplayProject(index) {
-  const projectItem = document.createElement("div");
-  projectItem.dataset.index = index;
-  projectItem.className = "project-item";
-  return projectItem;
-}
+//bundled this together with display project, easier to work with
+// function createDisplayProject(index) {
+//   const projectItem = document.createElement("div");
+//   const closeBut = document.createElement("button");
+//   const projectTitle = document.createElement("p");
+//   projectItem.appendChild(projectTitle);
+//   closeBut.textContent = "x";
+//   projectItem.appendChild(closeBut);
+//   return projectItem;
+// }
 
 //clear the input box in quick add and project add after one item has been aded
 function cleanInputBox(inputBox) {
@@ -44,13 +47,15 @@ var displayList = (function () {
 
   function displayProject(array) {
     cleanList(projectListCont);
-    array.forEach((item, index) => {
+    array.forEach((item, index) => {//to skip over default inbox
       if (index === array.length - 1) {
         return 0;
       }
-      var project = createDisplayProject(index);
-      project.textContent = item.getProjectName();
-      projectListCont.appendChild(project);
+      const projectDiv = document.createElement("div");
+      projectDiv.innerHTML = `<p>${item.getProjectName()}</p><button class="close-proj-but">x</button>`
+      projectDiv.dataset.index = index;
+      projectDiv.className = "project-item";
+      projectListCont.appendChild(projectDiv);
     });
   }
 

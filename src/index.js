@@ -12,6 +12,7 @@ import {
   getProjectCont,
   getActiveProject,
   setActiveProject,
+  deleteProject,
 } from "./projectHandler";
 
 //event listeners
@@ -20,8 +21,8 @@ const inputBox = document.querySelector("header input");
 inputBox.addEventListener("keydown", quickAdd);
 
 function quickAdd(e) {
+  //prevents user from entering blank todos
   if (e.key === "Enter" && inputBox.value !== "") {
-    //prevents user from entering blank todos
     getActiveProject().addTodo(inputBox.value);
     cleanInputBox(inputBox);
     displayList.displayTodo(getActiveProject().getTodoCont());
@@ -76,23 +77,38 @@ getProjectCont()[0].addTodo("work - wassup");
 const aside = document.querySelector("aside");
 aside.addEventListener("click", (e) => {
   var projectSelected;
-  //need an two if's coz inbox doesnt contain a dataset 
-  //because its displayed above and and is a default 
+  //need an two if's coz inbox doesnt contain a dataset.index
+  //because its displayed above and and is a default
   //this was easier than assigning it a dataset
-  //but if need arises i might as well assign it 
-  if (e.target.classList.contains("inbox")) {
-    console.log("inbox selected");
-    projectSelected = getProjectCont()[getProjectCont().length - 1];
-  } else if (e.target.classList.contains("project-item")) {
-    projectSelected = getProjectCont()[e.target.dataset.index];
-    console.log(`${e.target} selected`);
+  //but if need arises i might as well assign it
+
+  if (e.target.classList.contains("project-item")) {
+    projectSelected = getProjectCont()[+e.target.dataset.index];
+    if (e.target.classList.contains("inbox")) {
+      console.log("inbox selected");
+      projectSelected = getProjectCont()[getProjectCont().length - 1];
+    }
+    setActiveProject(projectSelected);
+    displayList.displayTodo(projectSelected.getTodoCont());
+
+    //the title on the main screen of the project you are viewing
+    updateProjectHeader(projectSelected.getProjectName());
   }
-  setActiveProject(projectSelected);
-  displayList.displayTodo(projectSelected.getTodoCont());
-//the title on the main screen of the project you are viewing
-  updateProjectHeader(projectSelected.getProjectName());
-  
+});
+//delete project
+aside.addEventListener("click", (e) => {
+  console.log("called");
+  if (e.target.classList.contains("close-proj-but")) {
+    if(confirm("Do you want to delete the project?"))
+    {deleteProject(getProjectCont()[e.target.parentElement.dataset.index]);
+    displayList.displayProject(getProjectCont());}
+    //debugger
+    // getProjectCont().forEach((item) => {
+    //   console.log(item.getProjectName());
+    // });
+  }
 });
 
+//default
 displayList.displayProject(getProjectCont());
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
