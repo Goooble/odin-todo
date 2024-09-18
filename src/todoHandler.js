@@ -1,6 +1,6 @@
 
 
-function todo(title, description = null, date = null, priority = null, project = "inbox"){
+function todo(title, notes, date = null, priority = null){
     var checked = false;
     function getTitle(){
         return title;
@@ -15,11 +15,20 @@ function todo(title, description = null, date = null, priority = null, project =
     function uncheckTodo(){
         checked=false
     }
-    return{getState, getTitle, checkTodo, uncheckTodo}
+    function getNotes(){
+        return notes;
+    }
+    function getDate(){
+        return date;
+    }
+    function getPriority(){
+        return priority;
+    }
+    return{getState, getTitle, checkTodo, uncheckTodo, getNotes, getDate, getPriority}
 }
 
-function createTodo(title, description, date, priority, project){
-    return todo(title, description, date, priority, project);
+function createTodo(title, notes, date, priority){
+    return todo(title, notes, date, priority);
 }
 
 function deleteTodo(todo, cont){

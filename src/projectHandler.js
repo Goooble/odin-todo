@@ -18,9 +18,9 @@ function project(projectName) {
     return projectName;
   }
 
-  function addTodo(title, description, date, priority) {
+  function addTodo(title, notes, date, priority) {
     todoCont.unshift(
-      createTodo(title, description, date, priority, projectName)
+      createTodo(title, notes, date, priority)
     );
   }
 

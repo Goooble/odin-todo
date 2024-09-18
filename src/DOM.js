@@ -112,8 +112,11 @@ var dialogHandler = (function () {
   const notes = document.querySelector("dialog #notes");
 
   function getDiaInput(){
-    const returnArray = [title.value, dueDate.value, priority.value, project.value, notes.value];
+    const returnArray = [+project.value, title.value, notes.value, dueDate.value, priority.value];
     form.reset();
+    // for(let item of returnArray){
+    //   console.log(item);
+    // }
     return returnArray;
   }
 

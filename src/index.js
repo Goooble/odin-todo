@@ -26,7 +26,7 @@ function getActiveProject() {
 
 function setActiveProject(project) {
   activeProject = project;
-  updateViewBox(getActiveProject(), getProjectCont(), getActiveProject().getCompCont())
+  updateViewBox(getActiveProject(), getProjectCont(), getActiveProject().getCompCont());
 }
 
 
@@ -53,7 +53,10 @@ closeDiaBut.addEventListener("click", ()=>{
 
 dialog.addEventListener("close", () => {
   if(dialog.returnValue === "Submit"){
-
+    const [projectIndex, ...todoInput] = dialogHandler.getDiaInput();
+    console.log(todoInput);
+    getProjectCont()[projectIndex].addTodo(...todoInput);
+    updateViewBox(getActiveProject(), getProjectCont(), getActiveProject().getCompCont());
   }
 })
 
@@ -201,6 +204,13 @@ setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 //debugger
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", ()=>{
+  console.log("todo details:")
+  console.log(getActiveProject().getTodoCont()[0].getTitle());
+  console.log(getActiveProject().getTodoCont()[0].getNotes());
+  console.log(getActiveProject().getTodoCont()[0].getDate());
+  console.log(getActiveProject().getTodoCont()[0].getPriority());
+
+  console.log(getProjectCont()[2].getProjectName())
   console.log("todo");
   getActiveProject().getTodoCont().forEach((item) => {
     console.log(item.getTitle());
