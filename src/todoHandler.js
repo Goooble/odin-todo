@@ -1,14 +1,18 @@
 
 
 function todo(title, description = null, date = null, priority = null, project = "inbox"){
-    var state = false;
+    var checked = false;
     function getTitle(){
         return title;
     }
     function getState(){
-        return state;
+        return checked;
     }
-    return{getState, getTitle}
+
+    function checkTodo(){
+        checked = true;
+    }
+    return{getState, getTitle, checkTodo}
 }
 
 function createTodo(title, description, date, priority, project){
@@ -22,5 +26,8 @@ function deleteTodo(todo, cont){
         } 
     })
 }
+
+
+  
 
 export {createTodo, deleteTodo};

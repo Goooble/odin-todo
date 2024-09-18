@@ -145,14 +145,24 @@ dialog form{
 main{
     display: flex;
     flex-direction: column;
+    gap: 100px;
+}
+.todo-disp-cont{
+    display: flex;
+    flex-direction: column;
     gap: 20px;
 }
-
 .todo-item{
     background-color: #FFF;
     color: black;
     padding: 10px;
     font-size: 1.1rem;
     text-align: start;
+    display: flex;
+    justify-content: space-between;
 }
 
+.todo-name-cont{
+    display: flex;
+    gap: 20px;
+}

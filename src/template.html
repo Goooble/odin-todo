@@ -24,7 +24,7 @@
           placeholder="Press Enter to quick add"
         />
       </div>
-      <dialog open>
+      <dialog>
         <form action="" method="dialog">
           <label for="title">Title:</label>
           <input
@@ -33,17 +33,13 @@
             placeholder="Enter the name of the Todo"
           />
           <label for="date">Due Date:</label>
-          <input
-            type="date"
-            id="desc"
-          />
+          <input type="date" id="desc" />
           <label for="priority">Priority:</label>
           <select name="priority" id="priority">
             <option value="high">High</option>
             <option value="medium">Medium</option>
             <option value="low">Low</option>
             <option value="null" selected>None</option>
-            
           </select>
           <label for="project">Project:</label>
           <select name="project" id="project">
@@ -58,14 +54,29 @@
             placeholder="Enter additional information"
           />
 
-          <input type="submit">
+          <input type="submit" />
           <button class="close-but">Close</button>
         </form>
       </dialog>
     </header>
     <main class="main">
-      <div class="todo-item">git gud</div>
-      <div class="todo-item">skill issue</div>
+      
+      <div class="todo-disp-cont">
+        <div class="todo-item">
+          <div class="todo-name-cont">
+            <input type="checkbox" />
+            <p>git gud</p>
+          </div>
+          <div class="options-cont">edit</div>
+        </div>
+        <div class="todo-item">skill issue</div>
+      </div>
+      
+      <div class="done-disp-cont">
+        <div class="todo-item">skill issue intensified</div>
+      </div>
+
+      
     </main>
   </body>
 </html>

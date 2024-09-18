@@ -1,12 +1,8 @@
-const todoDisplayCont = document.querySelector("main");
+const todoDisplayCont = document.querySelector(".todo-disp-cont");
 const projectListCont = document.querySelector("aside");
 
-
-//create the element 
+//create the element
 function createDisplayTodo(index) {
-  const todoItem = document.createElement("div");
-  todoItem.dataset.index = index;
-  todoItem.className = "todo-item";
   return todoItem;
 }
 //bundled this together with display project, easier to work with
@@ -34,25 +30,31 @@ function cleanList(container) {
     });
 }
 
-
 var displayList = (function () {
   function displayTodo(array) {
     cleanList(todoDisplayCont);
     array.forEach((item, index) => {
-      var todoItem = createDisplayTodo(index);
-      todoItem.textContent = item.getTitle();
+      const todoItem = document.createElement("div");
+      todoItem.dataset.index = index;
+      todoItem.className = "todo-item";
+      todoItem.innerHTML = `<div class="todo-name-cont">
+          <input type="checkbox" />
+          <p>${item.getTitle()}</p>
+        </div>
+        <div class="options-cont">edit</div>`
       todoDisplayCont.appendChild(todoItem);
     });
   }
 
   function displayProject(array) {
     cleanList(projectListCont);
-    array.forEach((item, index) => {//to skip over default inbox
+    array.forEach((item, index) => {
+      //to skip over default inbox
       if (index === array.length - 1) {
         return 0;
       }
       const projectDiv = document.createElement("div");
-      projectDiv.innerHTML = `<p>${item.getProjectName()}</p><button class="close-proj-but">x</button>`
+      projectDiv.innerHTML = `<p>${item.getProjectName()}</p><button class="close-proj-but">x</button>`;
       projectDiv.dataset.index = index;
       projectDiv.className = "project-item";
       projectListCont.appendChild(projectDiv);
@@ -62,14 +64,13 @@ var displayList = (function () {
   return { displayTodo, displayProject };
 })();
 
-function updateProjectHeader(name){
+function updateProjectHeader(name) {
   const header = document.querySelector("header h1");
   header.textContent = name;
 }
 
 //for the add button to switch to input after clicked
 function toggleInput() {
-
   const addProjectBut = document.querySelector(".add-project-but");
   const addProjectInput = document.querySelector("aside input");
   addProjectBut.classList.toggle("show-add-but");

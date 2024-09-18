@@ -5,16 +5,7 @@ function getProjectCont() {
   return projectCont;
 }
 
-var activeProject; //to know which project is currently on the main
-//screen to quick add todo's
 
-function getActiveProject() {
-  return activeProject;
-}
-
-function setActiveProject(project) {
-  activeProject = project;
-}
 
 
 
@@ -37,6 +28,11 @@ function project(projectName) {
     deleteTodo(todoItem, todoCont);
   }
 
+  function moveTodo(index){//moves completed todo to a different array
+    todoCont[index].checkTodo();
+    compCont.unshift(todoCont.splice(index, 1));
+  }
+
   function getTodoCont() {
     return todoCont;
   }
@@ -46,6 +42,7 @@ function project(projectName) {
     removeTodo,
     getTodoCont,
     getProjectName,
+    moveTodo
   };
 }
 
@@ -64,7 +61,5 @@ function deleteProject(project) {
 export {
   addProject,
   getProjectCont,
-  deleteProject,
-  getActiveProject,
-  setActiveProject,
+  deleteProject
 };

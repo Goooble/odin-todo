@@ -10,14 +10,38 @@ import {
 import {
   addProject,
   getProjectCont,
-  getActiveProject,
-  setActiveProject,
   deleteProject,
 } from "./projectHandler";
 
+var activeProject; //to know which project is currently on the main
+//screen to quick add todo's
+function updateViewBox(){
+  updateProjectHeader(getActiveProject().getProjectName());
+  displayList.displayTodo(getActiveProject().getTodoCont());
+  displayList.displayProject(getProjectCont());
+}
+function getActiveProject() {
+  return activeProject;
+}
+
+function setActiveProject(project) {
+  activeProject = project;
+  updateViewBox();
+}
+
+
+
+const inputBox = document.querySelector("header input");
+const todosHolder = document.querySelector(".todo-disp-cont");
+
+const addProjectBut = document.querySelector(".add-project-but");
+const addProjectInput = document.querySelector("aside input");
+
+const aside = document.querySelector("aside");
+
 //event listeners
 //quick add todos
-const inputBox = document.querySelector("header input");
+
 inputBox.addEventListener("keydown", quickAdd);
 
 function quickAdd(e) {
@@ -25,7 +49,7 @@ function quickAdd(e) {
   if (e.key === "Enter" && inputBox.value !== "") {
     getActiveProject().addTodo(inputBox.value);
     cleanInputBox(inputBox);
-    displayList.displayTodo(getActiveProject().getTodoCont());
+    updateViewBox();
     //debugging
     console.log(getActiveProject().getProjectName());
     getActiveProject()
@@ -36,10 +60,23 @@ function quickAdd(e) {
   }
 }
 
-//add projects
-const addProjectBut = document.querySelector(".add-project-but");
-const addProjectInput = document.querySelector("aside input");
+//check todo
+todosHolder.addEventListener("click", (e) => {
+  console.log(e.target.tagName);
+  if (e.target.tagName === "INPUT") {
+    console.log("called");
 
+    var index = e.composedPath().find((item) => {
+      if (item.classList.contains("todo-item")) {
+        return true;
+      }
+    }).dataset.index;
+    getActiveProject().moveTodo(index);
+    updateViewBox();
+  }
+});
+
+//add projects
 //to switch the add project button to input
 addProjectBut.addEventListener("click", () => {
   toggleInput();
@@ -50,7 +87,7 @@ addProjectBut.addEventListener("click", () => {
 addProjectInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && addProjectInput.value !== "") {
     addProject(addProjectInput.value);
-    displayList.displayProject(getProjectCont());
+    updateViewBox();
     cleanInputBox(addProjectInput);
   }
 });
@@ -74,34 +111,35 @@ getProjectCont()[0].addTodo("work - hello");
 getProjectCont()[0].addTodo("work - wassup");
 
 //to select a project to display on the main screen
-const aside = document.querySelector("aside");
+
 aside.addEventListener("click", (e) => {
   var projectSelected;
   //need an two if's coz inbox doesnt contain a dataset.index
   //because its displayed above and and is a default
   //this was easier than assigning it a dataset
   //but if need arises i might as well assign it
-
-  if (e.target.classList.contains("project-item")) {
-    projectSelected = getProjectCont()[+e.target.dataset.index];
+  var projectItem = e.composedPath().find((item) => {
+    //so that even clicking on text which is inside p works
+    if(item.classList.contains("project-item")){
+      return true;
+    }
+  })
+  if (projectItem) {
+    
+    projectSelected = getProjectCont()[+projectItem.dataset.index];
     if (e.target.classList.contains("inbox")) {
-      console.log("inbox selected");
       projectSelected = getProjectCont()[getProjectCont().length - 1];
     }
     setActiveProject(projectSelected);
-    displayList.displayTodo(projectSelected.getTodoCont());
-
-    //the title on the main screen of the project you are viewing
-    updateProjectHeader(projectSelected.getProjectName());
   }
 });
 //delete project
 aside.addEventListener("click", (e) => {
-  console.log("called");
   if (e.target.classList.contains("close-proj-but")) {
-    if(confirm("Do you want to delete the project?"))
-    {deleteProject(getProjectCont()[e.target.parentElement.dataset.index]);
-    displayList.displayProject(getProjectCont());}
+    if (confirm("Do you want to delete the project?")) {
+      deleteProject(getProjectCont()[e.target.parentElement.dataset.index]);
+      setActiveProject(getProjectCont()[getProjectCont().length - 1]);
+    }
     //debugger
     // getProjectCont().forEach((item) => {
     //   console.log(item.getProjectName());
@@ -110,5 +148,4 @@ aside.addEventListener("click", (e) => {
 });
 
 //default
-displayList.displayProject(getProjectCont());
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
