@@ -6,20 +6,15 @@ import {
   toggleInput,
   updateViewBox,
   dialogHandler
-} from "./DOM";
+} from "./domHandler";
 import {
   addProject,
   getProjectCont,
   deleteProject,
 } from "./projectHandler";
 
+
 var activeProject; //to know which project is currently on the main
-//screen to quick add todo's
-// function updateViewBox(){
-//   updateProjectHeader(getActiveProject().getProjectName());
-//   displayList.displayTodo(getActiveProject().getTodoCont());
-//   displayList.displayProject(getProjectCont());
-// }
 function getActiveProject() {
   return activeProject;
 }
@@ -31,10 +26,6 @@ function setActiveProject(project) {
 
 
 
-
-
-
-
 const aside = document.querySelector("aside");
 
 //event listeners
@@ -43,8 +34,14 @@ const aside = document.querySelector("aside");
 const addTodoBut = document.querySelector(".add-but"); 
 const dialog = document.querySelector("dialog");
 const closeDiaBut = document.querySelector("dialog .close-but")
+const inputBox = document.querySelector("header input");
+const todosHolder = document.querySelector(".todo-disp-cont");
+
+
 addTodoBut.addEventListener("click", () => {
   dialog.showModal();
+  dialogHandler.updateDiaProjects(getProjectCont());
+  dialogHandler.matchInputBox();
 })
 
 closeDiaBut.addEventListener("click", ()=>{
@@ -53,17 +50,28 @@ closeDiaBut.addEventListener("click", ()=>{
 
 dialog.addEventListener("close", () => {
   if(dialog.returnValue === "Submit"){
+    //to extract project index value seperately
     const [projectIndex, ...todoInput] = dialogHandler.getDiaInput();
-    console.log(todoInput);
+    console.log(getProjectCont()[0].getProjectName())
     getProjectCont()[projectIndex].addTodo(...todoInput);
     updateViewBox(getActiveProject(), getProjectCont(), getActiveProject().getCompCont());
+    cleanInputBox(inputBox);
+    dialog.returnValue = "init";//resetting this value for the next add
   }
 })
 
-//quick add todos
-const inputBox = document.querySelector("header input");
-const todosHolder = document.querySelector(".todo-disp-cont");
+// edit todos
+todosHolder.addEventListener("click", (e) =>{
+  if(e.target.classList.contains("edit-but")){
+    dialog.showModal();
+    dialogHandler.updateDiaProjects(getProjectCont());
+    var brokenTodo = getActiveProject().getTodoCont()[e.target.parentElement.parentElement.dataset.index]
+    dialogHandler.editTodoMatch(brokenTodo, getProjectCont().indexOf(getActiveProject()));
+    dialogHandler.editTodo(brokenTodo);
+  }
+})  
 
+//quick add todos
 
 inputBox.addEventListener("keydown", quickAdd);
 
@@ -89,7 +97,7 @@ const doneDispCont = document.querySelector(".done-disp-cont");
 todosHolder.addEventListener("click", (e) => {
   if (e.target.tagName === "INPUT") {
 
-    var index = e.composedPath().find((item) => {
+    var index = e.composedPath().find((item) => {//to get index 
       if (item.classList.contains("todo-item")) {
         return true;
       }
@@ -167,7 +175,7 @@ aside.addEventListener("click", (e) => {
 
   var shortArray = e.composedPath().slice(0, -2);
   //having document and window object in the path messes up the .contains() below
-  console.log(shortArray);
+
   var projectItem = shortArray.find((item) => {
     //so that even clicking on text which is inside p works
     if(item.classList.contains("project-item")){

@@ -31,6 +31,7 @@
             type="text"
             id="title"
             placeholder="Enter the name of the Todo"
+            required
           />
           <label for="date">Due Date:</label>
           <input type="date" id="date" />
@@ -42,8 +43,8 @@
             <option value="none" selected>None</option>
           </select>
           <label for="project">Project:</label>
-          <select name="project" id="project">
-            <option value="2" selected>Inbox</option>
+          <select name="project" class="project-select" id="project">
+            
             <!-- even selected would need to be updated every round -->
             <!-- set this up using js including inbox to use index in value-->
           </select>

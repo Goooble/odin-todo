@@ -1,22 +1,9 @@
 const todoDisplayCont = document.querySelector(".todo-disp-cont");
 const projectListCont = document.querySelector("aside");
 
-//create the element
-function createDisplayTodo(index) {
-  return todoItem;
-}
-//bundled this together with display project, easier to work with
-// function createDisplayProject(index) {
-//   const projectItem = document.createElement("div");
-//   const closeBut = document.createElement("button");
-//   const projectTitle = document.createElement("p");
-//   projectItem.appendChild(projectTitle);
-//   closeBut.textContent = "x";
-//   projectItem.appendChild(closeBut);
-//   return projectItem;
-// }
 
-//clear the input box in quick add and project add after one item has been aded
+
+//clear the input box after things have been added in various input boxes
 function cleanInputBox(inputBox) {
   inputBox.value = "";
 }
@@ -31,17 +18,20 @@ function cleanList(container) {
 }
 
 var display = (function () {
+
   function displayTodo(array) {
     cleanList(todoDisplayCont);
     array.forEach((item, index) => {
       const todoItem = document.createElement("div");
-      todoItem.dataset.index = index;
+      todoItem.dataset.index = index;//to keep track off todos in the scripts
       todoItem.className = "todo-item";
       todoItem.innerHTML = `<div class="todo-name-cont">
           <input type="checkbox" />
           <p>${item.getTitle()}</p>
         </div>
-        <div class="options-cont">edit</div>`;
+        <div class="options-cont">
+          <button class="edit-but">Edit</button>
+        </div>`;
       todoDisplayCont.appendChild(todoItem);
     });
   }
@@ -57,8 +47,7 @@ var display = (function () {
         todoItem.innerHTML = `<div class="todo-name-cont">
           <input type="checkbox" checked/>
           <p>${item.getTitle()}</p>
-        </div>
-        <div class="options-cont">edit</div>`;
+        </div>`;
         doneDispCont.appendChild(todoItem);
       });
     }
@@ -78,7 +67,7 @@ var display = (function () {
       projectListCont.appendChild(projectDiv);
     });
   }
-  function updateProjectHeader(name) {
+  function updateProjectHeader(name) {//the todo view screen header
     const header = document.querySelector("header h1");
     header.textContent = name;
   }
@@ -104,6 +93,7 @@ function updateViewBox(project, projectArray, doneTodoCont) {
 }
 
 var dialogHandler = (function () {
+  const quickInput = document.querySelector("#add-quick");
   const form = document.querySelector("dialog form");
   const title = document.querySelector("dialog #title");
   const dueDate = document.querySelector("dialog #date");
@@ -111,16 +101,50 @@ var dialogHandler = (function () {
   const project = document.querySelector("dialog #project");
   const notes = document.querySelector("dialog #notes");
 
+  function updateDiaProjects(projectArray){//this is the project select option in dialog
+    cleanList(project);
+    //reversingso the appends happen in the same order
+    //-as the projects displayed in the sidebar
+    for(let item of projectArray.toReversed()){
+      const option = document.createElement("option");
+      option.value = `${projectArray.indexOf(item)}`//to access proper projects
+      option.textContent = item.getProjectName();
+      if(projectArray.toReversed().indexOf(item) === 0){
+        option.setAttribute("selected", true);//to set index as default
+      }
+      project.appendChild(option);
+    }
+
+  }
+
+  function matchInputBox(){//so that the text already entered in quick add
+    //is the same when dialog is open
+    title.value = quickInput.value;
+  }
+
   function getDiaInput(){
+    console.log(project.value);
     const returnArray = [+project.value, title.value, notes.value, dueDate.value, priority.value];
     form.reset();
-    // for(let item of returnArray){
-    //   console.log(item);
-    // }
+    //making sure only domHandler can access the.. well DOM
     return returnArray;
   }
 
-  return {getDiaInput};
+  function editTodoMatch(todo, projectIndex){//when clicked on edit, same dialog box opens up 
+    //this acquires the value of the todo being edited in the dialog
+    title.value = todo.getTitle();
+    dueDate.value = todo.getDate();
+    priority.value = todo.getPriority();
+    notes.value = todo.getNotes();
+    project.value = projectIndex;
+
+  }
+
+  function editTodo(todo){
+    
+  }
+
+  return {getDiaInput, editTodoMatch, editTodo,updateDiaProjects, matchInputBox};
 })();
 
 export { toggleInput, cleanInputBox, updateViewBox, dialogHandler };
