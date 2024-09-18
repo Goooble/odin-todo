@@ -61,7 +61,7 @@ var display = (function () {
         return 0;
       }
       const projectDiv = document.createElement("div");
-      projectDiv.innerHTML = `<p>${item.getProjectName()}</p><button class="close-proj-but">x</button>`;
+      projectDiv.innerHTML = `<p class="project-name">${item.getProjectName()}</p><button class="close-proj-but">x</button>`;
       projectDiv.dataset.index = index;
       projectDiv.className = "project-item";
       projectListCont.appendChild(projectDiv);
@@ -123,7 +123,6 @@ var dialogHandler = (function () {
   }
 
   function getDiaInput(){
-    console.log(project.value);
     const returnArray = [+project.value, title.value, notes.value, dueDate.value, priority.value];
     form.reset();
     //making sure only domHandler can access the.. well DOM
@@ -140,11 +139,7 @@ var dialogHandler = (function () {
 
   }
 
-  function editTodo(todo){
-    
-  }
-
-  return {getDiaInput, editTodoMatch, editTodo,updateDiaProjects, matchInputBox};
+  return {getDiaInput, editTodoMatch,updateDiaProjects, matchInputBox};
 })();
 
 export { toggleInput, cleanInputBox, updateViewBox, dialogHandler };

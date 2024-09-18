@@ -1,4 +1,4 @@
-function todo(title, notes, date = null, priority = null) {
+function todo(title, notes, date = null, priority = "none") {
   var checked = false;
   function getTitle() {
     return title;
@@ -41,6 +41,13 @@ function todo(title, notes, date = null, priority = null) {
   function setPriority(info) {
     priority = info;
   }
+
+  function editTodo(name, desc, dueDate, label){
+    title = name;
+    notes = desc;
+    date = dueDate;
+    priority = label;
+  }
   return {
     getState,
     getTitle,
@@ -52,7 +59,8 @@ function todo(title, notes, date = null, priority = null) {
     setNotes,
     setTitle,
     setDate,
-    setPriority
+    setPriority,
+    editTodo
   };
 }
 
