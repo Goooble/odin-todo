@@ -28,11 +28,18 @@ function project(projectName) {
     deleteTodo(todoItem, todoCont);
   }
 
-  function moveTodo(index){//moves completed todo to a different array
+  function moveTodo(index){//moves completed todo to a completed array
     todoCont[index].checkTodo();
     
     compCont.unshift(todoCont[index]);
     todoCont.splice(index, 1);
+  }
+
+  function moveBackTodo(index){//moves completed todo to the todo array
+    compCont[index].uncheckTodo();
+    
+    todoCont.unshift(compCont[index]);
+    compCont.splice(index, 1);
   }
 
   function getTodoCont() {
@@ -49,7 +56,8 @@ function project(projectName) {
     getTodoCont,
     getProjectName,
     moveTodo,
-    getCompCont
+    getCompCont,
+    moveBackTodo
   };
 }
 

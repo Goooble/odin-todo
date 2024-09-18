@@ -118,7 +118,7 @@ header .add-but{
     color: white;
 
 }
-header .add-but:hover{
+header .add-but:hover, header .add-but:focus{
     background-color: rgb(0, 0, 0, 0.5);
     border-radius: 10px;
     border-bottom: 2px solid #fff;
@@ -126,6 +126,10 @@ header .add-but:hover{
 }
 header .add-but:active{
 border: none;
+}
+
+header .add-but:focus{
+    outline: none;
 }
 
 header .quick-add-cont{

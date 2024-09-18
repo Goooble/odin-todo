@@ -4,7 +4,8 @@ import "./styles.css";
 import {
   cleanInputBox,
   toggleInput,
-  updateViewBox
+  updateViewBox,
+  dialogHandler
 } from "./DOM";
 import {
   addProject,
@@ -30,18 +31,36 @@ function setActiveProject(project) {
 
 
 
-const inputBox = document.querySelector("header input");
-const todosHolder = document.querySelector(".todo-disp-cont");
-const showDoneBut = document.querySelector(".show-done");
-const doneDispCont = document.querySelector(".done-disp-cont");
 
-const addProjectBut = document.querySelector(".add-project-but");
-const addProjectInput = document.querySelector("aside input");
+
+
 
 const aside = document.querySelector("aside");
 
 //event listeners
+
+//dialog add todos
+const addTodoBut = document.querySelector(".add-but"); 
+const dialog = document.querySelector("dialog");
+const closeDiaBut = document.querySelector("dialog .close-but")
+addTodoBut.addEventListener("click", () => {
+  dialog.showModal();
+})
+
+closeDiaBut.addEventListener("click", ()=>{
+  dialog.close();
+})
+
+dialog.addEventListener("close", () => {
+  if(dialog.returnValue === "Submit"){
+
+  }
+})
+
 //quick add todos
+const inputBox = document.querySelector("header input");
+const todosHolder = document.querySelector(".todo-disp-cont");
+
 
 inputBox.addEventListener("keydown", quickAdd);
 
@@ -62,6 +81,8 @@ function quickAdd(e) {
 }
 
 //check todo
+const showDoneBut = document.querySelector(".show-done");
+const doneDispCont = document.querySelector(".done-disp-cont");
 todosHolder.addEventListener("click", (e) => {
   if (e.target.tagName === "INPUT") {
 
@@ -82,7 +103,23 @@ showDoneBut.addEventListener("click", (e) => {
   {updateViewBox(getActiveProject(), getProjectCont(), getActiveProject().getCompCont())}
 })
 
+//uncheck todo
+doneDispCont.addEventListener("click", (e) => {
+  if (e.target.tagName === "INPUT") {
+
+    var index = e.composedPath().find((item) => {
+      if (item.classList.contains("done-todo-item")) {
+        return true;
+      }
+    }).dataset.index;
+    getActiveProject().moveBackTodo(index);
+    updateViewBox(getActiveProject(), getProjectCont(), getActiveProject().getCompCont());
+  }
+} )
+
 //add projects
+const addProjectBut = document.querySelector(".add-project-but");
+const addProjectInput = document.querySelector("aside input");
 //to switch the add project button to input
 addProjectBut.addEventListener("click", () => {
   toggleInput();
@@ -160,3 +197,19 @@ aside.addEventListener("click", (e) => {
 
 //default
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
+
+//debugger
+const logger = document.querySelector(".logger");
+logger.addEventListener("click", ()=>{
+  console.log("todo");
+  getActiveProject().getTodoCont().forEach((item) => {
+    console.log(item.getTitle());
+    console.log(`--${item.getState()}`);
+  })
+  console.log("completed below")
+  getActiveProject().getCompCont().forEach((item) => {
+    console.log(item.getTitle());
+    console.log(`--${item.getState()}`);
+  })
+  console.log("----------")
+})

@@ -103,4 +103,21 @@ function updateViewBox(project, projectArray, doneTodoCont) {
   //a todo is checked i am an accidental genius muahahaha
 }
 
-export { toggleInput, cleanInputBox, updateViewBox };
+var dialogHandler = (function () {
+  const form = document.querySelector("dialog form");
+  const title = document.querySelector("dialog #title");
+  const dueDate = document.querySelector("dialog #date");
+  const priority = document.querySelector("dialog #priority");
+  const project = document.querySelector("dialog #project");
+  const notes = document.querySelector("dialog #notes");
+
+  function getDiaInput(){
+    const returnArray = [title.value, dueDate.value, priority.value, project.value, notes.value];
+    form.reset();
+    return returnArray;
+  }
+
+  return {getDiaInput};
+})();
+
+export { toggleInput, cleanInputBox, updateViewBox, dialogHandler };

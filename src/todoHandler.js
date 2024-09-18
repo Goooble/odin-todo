@@ -12,7 +12,10 @@ function todo(title, description = null, date = null, priority = null, project =
     function checkTodo(){
         checked = true;
     }
-    return{getState, getTitle, checkTodo}
+    function uncheckTodo(){
+        checked=false
+    }
+    return{getState, getTitle, checkTodo, uncheckTodo}
 }
 
 function createTodo(title, description, date, priority, project){
