@@ -30,11 +30,17 @@ function project(projectName) {
 
   function moveTodo(index){//moves completed todo to a different array
     todoCont[index].checkTodo();
-    compCont.unshift(todoCont.splice(index, 1));
+    
+    compCont.unshift(todoCont[index]);
+    todoCont.splice(index, 1);
   }
 
   function getTodoCont() {
     return todoCont;
+  }
+
+  function getCompCont(){
+    return compCont;
   }
 
   return {
@@ -42,7 +48,8 @@ function project(projectName) {
     removeTodo,
     getTodoCont,
     getProjectName,
-    moveTodo
+    moveTodo,
+    getCompCont
   };
 }
 

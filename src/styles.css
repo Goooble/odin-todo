@@ -152,7 +152,7 @@ main{
     flex-direction: column;
     gap: 20px;
 }
-.todo-item{
+.todo-item, .done-todo-item{
     background-color: #FFF;
     color: black;
     padding: 10px;
@@ -165,4 +165,16 @@ main{
 .todo-name-cont{
     display: flex;
     gap: 20px;
+}
+
+main .done-todo-item{
+    background-color: #bcbcbc;
+}
+
+.done-disp-cont{
+    display: none;
+}
+
+div .show-done-disp-cont{
+    display: block;
 }

@@ -24,13 +24,13 @@ function cleanInputBox(inputBox) {
 //clear the todo and project lists to include new todo's and projects
 function cleanList(container) {
   container
-    .querySelectorAll(`.${container.className}>*:not(.default-project, .inbox)`)
+    .querySelectorAll(`.${container.classList[0]}>*:not(.default-project, .inbox)`)
     .forEach((item) => {
       container.removeChild(item);
     });
 }
 
-var displayList = (function () {
+var display = (function () {
   function displayTodo(array) {
     cleanList(todoDisplayCont);
     array.forEach((item, index) => {
@@ -41,9 +41,27 @@ var displayList = (function () {
           <input type="checkbox" />
           <p>${item.getTitle()}</p>
         </div>
-        <div class="options-cont">edit</div>`
+        <div class="options-cont">edit</div>`;
       todoDisplayCont.appendChild(todoItem);
     });
+  }
+
+  function displayDoneTodo(array) {
+    const doneDispCont = document.querySelector(".show-done-disp-cont");
+    if (doneDispCont) {//so this doesnt run when show done todo hasnt been clicked
+      cleanList(doneDispCont);
+      array.forEach((item, index) => {
+        const todoItem = document.createElement("div");
+        todoItem.dataset.index = index;
+        todoItem.className = "done-todo-item";
+        todoItem.innerHTML = `<div class="todo-name-cont">
+          <input type="checkbox" checked/>
+          <p>${item.getTitle()}</p>
+        </div>
+        <div class="options-cont">edit</div>`;
+        doneDispCont.appendChild(todoItem);
+      });
+    }
   }
 
   function displayProject(array) {
@@ -60,14 +78,13 @@ var displayList = (function () {
       projectListCont.appendChild(projectDiv);
     });
   }
+  function updateProjectHeader(name) {
+    const header = document.querySelector("header h1");
+    header.textContent = name;
+  }
 
-  return { displayTodo, displayProject };
+  return { displayTodo, displayProject, updateProjectHeader, displayDoneTodo };
 })();
-
-function updateProjectHeader(name) {
-  const header = document.querySelector("header h1");
-  header.textContent = name;
-}
 
 //for the add button to switch to input after clicked
 function toggleInput() {
@@ -77,4 +94,13 @@ function toggleInput() {
   addProjectInput.classList.toggle("show-input");
 }
 
-export { displayList, toggleInput, cleanInputBox, updateProjectHeader };
+function updateViewBox(project, projectArray, doneTodoCont) {
+  display.updateProjectHeader(project.getProjectName());
+  display.displayTodo(project.getTodoCont());
+  display.displayProject(projectArray);
+  display.displayDoneTodo(doneTodoCont);//need to put it here so that
+  //it not only displays when clicked on show button but also when 
+  //a todo is checked i am an accidental genius muahahaha
+}
+
+export { toggleInput, cleanInputBox, updateViewBox };
