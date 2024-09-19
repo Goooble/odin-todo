@@ -1,4 +1,4 @@
-function todo(title, notes, date = null, priority = "none") {
+function todo(title, notes, date = "", priority = "none") {
   var checked = false;
   function getTitle() {
     return title;

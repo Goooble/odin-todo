@@ -87,6 +87,7 @@ todosHolder.addEventListener("click", (e) => {
       getActiveProject().getTodoCont()[
         e.target.parentElement.parentElement.dataset.index
       ];
+      console.log(brokenTodo)
     dialogHandler.editTodoMatch(
       brokenTodo,
       getProjectCont().indexOf(getActiveProject())
@@ -200,42 +201,49 @@ addProject("Inbox");
 addProject("School");
 
 addProject("Work");
-getProjectCont()[2].addTodo("inbox - hello");
-getProjectCont()[2].addTodo("inbox - wassup");
-getProjectCont()[1].addTodo("school - hello");
-getProjectCont()[1].addTodo("school - wassup");
-getProjectCont()[0].addTodo("work - hello");
-getProjectCont()[0].addTodo("work - wassup");
+getProjectCont()[2].addTodo(
+  "inbox - hello",
+  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus animi consequuntur repudiandae debitis perspiciatis molestias quibusdam ad molestiae fuga libero. Maxime accusamus quisquam illum veniam expedita omnis enim eligendi sapiente?",
+  "2024-09-21"
+);
+getProjectCont()[2].addTodo("inbox - wassup", "", "2024-09-21");
+getProjectCont()[2].addTodo("school - hello", "", "2024-09-21");
+getProjectCont()[2].addTodo("school - wassup", "", "2024-09-21");
+getProjectCont()[2].addTodo("work - hello", "", "2024-09-21");
+getProjectCont()[2].addTodo("work - wassup", "", "2024-09-21");
 
 //to select a project to display on the main screen
 
 aside.addEventListener("click", (e) => {
-  if(e.target.classList.contains("project-item") || e.target.classList.contains("project-name") ){var projectSelected;
-  
+  if (
+    e.target.classList.contains("project-item") ||
+    e.target.classList.contains("project-name")
+  ) {
+    var projectSelected;
 
-  var shortArray = e.composedPath().slice(0, -2);
-  //having document and window object in the path messes up the .contains() below
+    var shortArray = e.composedPath().slice(0, -2);
+    //having document and window object in the path messes up the .contains() below
 
-  var projectItem = shortArray.find((item) => {
-    //so that even clicking on text which is inside p works
-    if (item.classList.contains("project-item")) {
-      return true;
+    var projectItem = shortArray.find((item) => {
+      //so that even clicking on text which is inside p works
+      if (item.classList.contains("project-item")) {
+        return true;
+      }
+    });
+    //maybe add eventlistners to individual project-items themselves using for each
+
+    //need an two if's coz inbox doesnt contain a dataset.index
+    //because its displayed above and and is a default
+    //this was easier than assigning it a dataset
+    //but if need arises i might as well assign it
+    if (projectItem) {
+      projectSelected = getProjectCont()[+projectItem.dataset.index];
+      if (e.target.classList.contains("inbox")) {
+        projectSelected = getProjectCont()[getProjectCont().length - 1];
+      }
+      setActiveProject(projectSelected);
     }
-  });
-  //maybe add eventlistners to individual project-items themselves using for each
-
-
-  //need an two if's coz inbox doesnt contain a dataset.index
-  //because its displayed above and and is a default
-  //this was easier than assigning it a dataset
-  //but if need arises i might as well assign it
-  if (projectItem) {
-    projectSelected = getProjectCont()[+projectItem.dataset.index];
-    if (e.target.classList.contains("inbox")) {
-      projectSelected = getProjectCont()[getProjectCont().length - 1];
-    }
-    setActiveProject(projectSelected);
-  }}
+  }
 });
 //delete project
 aside.addEventListener("click", (e) => {
@@ -279,4 +287,19 @@ logger.addEventListener("click", () => {
       console.log(`--${item.getState()}`);
     });
   console.log("----------");
+});
+//show notes
+const todoHead = document.querySelector(".todo-header");
+
+todosHolder.addEventListener("click", (e) => {
+  var path = e.composedPath().slice(0, -2);
+  var todo = path.find((item) => {
+    if (item.classList.contains("todo-item")) {
+      return true;
+    }
+  });
+  if (todo) {
+    var notesCont = todo.querySelector(".todo-notes");
+    notesCont.classList.toggle("show-notes");
+  }
 });
