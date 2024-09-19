@@ -1,5 +1,7 @@
 import "./reset.css";
 import "./styles.css";
+import { format } from "date-fns";
+
 //interface between dom and scripts
 import {
   cleanInputBox,
@@ -206,11 +208,11 @@ getProjectCont()[2].addTodo(
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus animi consequuntur repudiandae debitis perspiciatis molestias quibusdam ad molestiae fuga libero. Maxime accusamus quisquam illum veniam expedita omnis enim eligendi sapiente?",
   "2024-09-21"
 );
-getProjectCont()[2].addTodo("inbox - wassup", "", "2024-09-21");
-getProjectCont()[2].addTodo("school - hello", "", "2024-09-21");
-getProjectCont()[2].addTodo("school - wassup", "", "2024-09-21");
-getProjectCont()[2].addTodo("work - hello", "", "2024-09-21");
-getProjectCont()[2].addTodo("work - wassup", "", "2024-09-21");
+getProjectCont()[2].addTodo("inbox - wassup", "");
+getProjectCont()[2].addTodo("school - hello", "");
+getProjectCont()[2].addTodo("school - wassup", "");
+getProjectCont()[2].addTodo("work - hello", "");
+getProjectCont()[2].addTodo("work - wassup", "");
 
 //to select a project to display on the main screen
 
@@ -265,28 +267,29 @@ setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 //debugger
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", () => {
-  console.log("todo details:");
-  console.log(getActiveProject().getTodoCont()[0].getTitle());
-  console.log(getActiveProject().getTodoCont()[0].getNotes());
-  console.log(getActiveProject().getTodoCont()[0].getDate());
-  console.log(getActiveProject().getTodoCont()[0].getPriority());
+  console.log(format(new Date("2014-01-22"), "LL/dd/yyyy"))
+  // console.log("todo details:");
+  // console.log(getActiveProject().getTodoCont()[0].getTitle());
+  // console.log(getActiveProject().getTodoCont()[0].getNotes());
+  // console.log(getActiveProject().getTodoCont()[0].getDate());
+  // console.log(getActiveProject().getTodoCont()[0].getPriority());
 
-  console.log(getProjectCont()[2].getProjectName());
-  console.log("todo");
-  getActiveProject()
-    .getTodoCont()
-    .forEach((item) => {
-      console.log(item.getTitle());
-      console.log(`--${item.getState()}`);
-    });
-  console.log("completed below");
-  getActiveProject()
-    .getCompCont()
-    .forEach((item) => {
-      console.log(item.getTitle());
-      console.log(`--${item.getState()}`);
-    });
-  console.log("----------");
+  // console.log(getProjectCont()[2].getProjectName());
+  // console.log("todo");
+  // getActiveProject()
+  //   .getTodoCont()
+  //   .forEach((item) => {
+  //     console.log(item.getTitle());
+  //     console.log(`--${item.getState()}`);
+  //   });
+  // console.log("completed below");
+  // getActiveProject()
+  //   .getCompCont()
+  //   .forEach((item) => {
+  //     console.log(item.getTitle());
+  //     console.log(`--${item.getState()}`);
+  //   });
+  // console.log("----------");
 });
 //show notes
 const todoHead = document.querySelector(".todo-header");

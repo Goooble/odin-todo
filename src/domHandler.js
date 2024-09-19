@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 const todoDisplayCont = document.querySelector(".todo-disp-cont");
 const projectListCont = document.querySelector("aside");
 
@@ -24,6 +25,14 @@ var display = (function () {
       const todoItem = document.createElement("div");
       todoItem.dataset.index = index; //to keep track off todos in the scripts
       todoItem.className = "todo-item";
+      var displayDate = "";//so that no duedates get displayed as empty string
+      //and not as NaN
+      if(item.getDueDate()){
+        displayDate = format(item.getDueDate(), "dd-MM-yyyy");
+      }
+      // if(item.getDueDate()){
+      //   displayDate = format(item.getDueDate(), "DD/MM/YYYY");
+      // }
       todoItem.innerHTML = `<div class="todo-name-cont">
           <input type="checkbox" />
           <div class="todo-header">
@@ -32,7 +41,7 @@ var display = (function () {
           </div>
         </div>
         <div class="options-cont">
-          <p class="todo-date">${item.getDate()}</p>
+          <p class="todo-date">${displayDate}</p>
           <button class="edit-but">Edit</button>
         </div>`;
       todoDisplayCont.appendChild(todoItem);
@@ -145,7 +154,7 @@ var dialogHandler = (function () {
     //when clicked on edit, same dialog box opens up
     //this acquires the value of the todo being edited in the dialog
     title.value = todo.getTitle();
-    dueDate.value = todo.getDate();
+    dueDate.value = todo.getDueDate();
     priority.value = todo.getPriority();
     notes.value = todo.getNotes();
     project.value = projectIndex;

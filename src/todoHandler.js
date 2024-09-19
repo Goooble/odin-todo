@@ -1,5 +1,9 @@
-function todo(title, notes, date = "", priority = "none") {
+function todo(title, notes, date = undefined, priority = "none") {
   var checked = false;
+  var dueDate = new Date(date);
+  if(!date){
+    dueDate = null;
+  }
   function getTitle() {
     return title;
   }
@@ -19,8 +23,8 @@ function todo(title, notes, date = "", priority = "none") {
     }
     return notes;
   }
-  function getDate() {
-    return date;
+  function getDueDate() {
+    return dueDate;
   }
   function getPriority() {
     if(!priority){
@@ -35,17 +39,17 @@ function todo(title, notes, date = "", priority = "none") {
   function setNotes(info) {
     notes = info;
   }
-  function setDate(info) {
-    date = info;
+  function setDueDate(info) {
+    dueDate = info;
   }
   function setPriority(info) {
     priority = info;
   }
 
-  function editTodo(name, desc, dueDate, label){
+  function editTodo(name, desc, date, label){
     title = name;
     notes = desc;
-    date = dueDate;
+    dueDate = new Date(date);
     priority = label;
   }
   return {
@@ -54,11 +58,11 @@ function todo(title, notes, date = "", priority = "none") {
     checkTodo,
     uncheckTodo,
     getNotes,
-    getDate,
+    getDueDate,
     getPriority,
     setNotes,
     setTitle,
-    setDate,
+    setDueDate,
     setPriority,
     editTodo
   };

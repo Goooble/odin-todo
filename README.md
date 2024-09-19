@@ -7,3 +7,4 @@ use class names to access dom so that even if you move around the design later y
 
 start with really basic design to get the scripts to actually work
 
+date() constructor returns an object yes but it has implicit object to string toString() that converts it
