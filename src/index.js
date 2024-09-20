@@ -28,8 +28,9 @@ function updateScreen(){
     quickAddCont.classList.add("today-filter-show");
   }else{
     quickAddCont.classList.remove("today-filter-show")
+    getActiveProject().sortTodo();
   }
-
+  
   //takes in lot of params, so i thought this would be easier
   updateViewBox(
     //slicing this so that a copy is passed, just-

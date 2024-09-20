@@ -62,7 +62,7 @@ function project(projectName) {
   }
 
   function getTodoCont() {
-    sortTodo();
+    
     return todoCont;
   }
 
@@ -86,8 +86,6 @@ var todayFilter = (function () {
   const { getTodoCont, getProjectName, getCompCont, moveTodo } = project("Today");
 
   function getTodos(projectArray) {
-    (projectArray[projectArray.length-1].getTodoCont()[0].getTitle());
-    /*if the above line doesnt exist, hte today filter keeps shuffling the todos for some reason*/
     getTodoCont().splice(0); //cleans array
     projectArray.forEach((project) => {
       project.getTodoCont().forEach((todo) => {
