@@ -34,7 +34,7 @@ var display = (function () {
       //   displayDate = format(item.getDueDate(), "DD/MM/YYYY");
       // }
       todoItem.innerHTML = `<div class="todo-name-cont">
-          <input type="checkbox" />
+          <input class = "checkbox" type="checkbox" />
           <div class="todo-header">
             <p>${item.getTitle()}</p>
             <p class = "todo-notes">${item.getNotes()}</p>
@@ -125,7 +125,7 @@ var dialogHandler = (function () {
       option.value = `${projectArray.indexOf(item)}`; //to access proper projects
       option.textContent = item.getProjectName();
       if (projectArray.indexOf(item) === activeProjectIndex) {
-        console.log(activeProjectIndex);
+        
         option.setAttribute("selected", true); //to set active project as default
         //-in the options
       }
@@ -157,6 +157,9 @@ var dialogHandler = (function () {
     //this acquires the value of the todo being edited in the dialog
     title.value = todo.getTitle();
     dueDate.value = format(todo.getDueDate(), "yyyy-MM-dd");
+    if(todo.getDueDate() === null){
+      dueDate.value = "";
+    }
     priority.value = todo.getPriority();
     notes.value = todo.getNotes();
     project.value = projectIndex;

@@ -54,35 +54,19 @@ function project(projectName) {
   }
 
   function verifyCheck() {
-
-    allTodo.forEach((item) => {
       compCont.length = 0;
       todoCont.length = 0;
+    allTodo.forEach((item) => {
+      
       if (item.getState() === true) {
-        console.log("caled")
+        
         compCont.push(item);
       }else {
+        
         todoCont.push(item)
       }
     });
 
-    // //moves completed todo to a completed array
-    // todoCont.forEach((item, index) => {
-    //   if (item.getState() === true) {
-    //     console.log("called")
-    //     compCont.unshift(item);
-    //     todoCont.splice(index, 1);
-    //   }
-    // });
-
-    // //moves unchecked todo to the todo array
-    // compCont.forEach((item, index) => {
-    //   if (item.getState() === false) {
-    //     console.log("called");
-    //     todoCont.unshift(item);
-    //     compCont.splice(index, 1);
-    //   }
-    // });
   }
 
   function getAllTodo(){
@@ -111,6 +95,10 @@ function project(projectName) {
   };
 }
 
+
+
+
+
 var todayFilter = (function () {
   const {
     getTodoCont,
@@ -118,34 +106,34 @@ var todayFilter = (function () {
     getCompCont,
     checkTodo,
     uncheckTodo,
+    verifyCheck,
+    getAllTodo
   } = project("Today");
 
-  var allTodo = [];
-
   function getTodos(projectArray) {
-    allTodo.splice(0); //cleans array
+    getAllTodo().splice(0); //cleans array
     projectArray.forEach((project) => {
-      project.getTodoCont().forEach((todo) => {
+      project.getAllTodo().forEach((todo) => {
         if (isToday(todo.getDueDate())) {
-          allTodo.push(todo);
+          getAllTodo().push(todo);
         }
       });
     });
   }
 
-  function verifyCheck() {
-    //alltodo and then sliding todos down to todoCont and CompCOnt should be how projects actually work
-    //TODO
-    allTodo.forEach((item) => {
-      getCompCont().length = 0;
-      getTodoCont().length = 0;
-      if (item.getState() === true) {
-        getCompCont().push(item);
-      }else {
-        getTodoCont().push(item)
-      }
-    });
-  }
+  // function verifyCheck() {
+  //   //alltodo and then sliding todos down to todoCont and CompCOnt should be how projects actually work
+  //   //TODO
+  //   allTodo.forEach((item) => {
+  //     getCompCont().length = 0;
+  //     getTodoCont().length = 0;
+  //     if (item.getState() === true) {
+  //       getCompCont().push(item);
+  //     }else {
+  //       getTodoCont().push(item)
+  //     }
+  //   });
+  // }
 
   return {
     getTodoCont,

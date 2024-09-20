@@ -20,6 +20,7 @@ function getActiveProject() {
 const quickAddCont = document.querySelector(".quick-add-cont")
 
 function updateScreen(){
+  todayFilter.getTodos(getProjectCont());
   getActiveProject().verifyCheck();
 
   if(getActiveProject() === todayFilter){
@@ -75,19 +76,19 @@ var brokenTodo;
 //this works for both editing and adding using the above to variables
 dialog.addEventListener("close", () => {
   if (dialog.returnValue === "Submit") {
+    console.log(editMode);
     //to extract project index value seperately
     const [projectIndex, ...todoInput] = dialogHandler.getDiaInput();
     if (editMode === true) {
       if (getProjectCont()[projectIndex] !== getActiveProject()) {
         //if some other project is selected, the todo gets moved
         getActiveProject()
-          .getTodoCont()
-          .splice(getActiveProject().getTodoCont().indexOf(brokenTodo), 1);
+          .getAllTodo()
+          .splice(getActiveProject().getAllTodo().indexOf(brokenTodo), 1);
         getProjectCont()[projectIndex].addTodo(...todoInput);
       } else {
         brokenTodo.editTodo(...todoInput);
-      }
-      editMode = false;
+      } 
     } else {
       getProjectCont()[projectIndex].addTodo(...todoInput);
     }
@@ -101,8 +102,9 @@ dialog.addEventListener("close", () => {
 
 // edit todos
 todosHolder.addEventListener("click", (e) => {
-  editMode = true;
+  
   if (e.target.classList.contains("edit-but")) {
+    editMode = true;
     dialog.showModal();
     dialogHandler.updateDiaProjects(getProjectCont());//it works without second value-
     //as editTodoMatch below used projectvalue(index) to get the default option in dia
@@ -110,7 +112,6 @@ todosHolder.addEventListener("click", (e) => {
       getActiveProject().getTodoCont()[
         e.target.parentElement.parentElement.dataset.index
       ];
-      console.log(brokenTodo)
     dialogHandler.editTodoMatch(
       brokenTodo,
       getProjectCont().indexOf(getActiveProject())
@@ -128,13 +129,6 @@ function quickAdd(e) {
     getActiveProject().addTodo(inputBox.value);
     cleanInputBox(inputBox);
     updateScreen();
-    //debugging
-    console.log(getActiveProject().getProjectName());
-    getActiveProject()
-      .getTodoCont()
-      .forEach((item) => {
-        console.log(`--${item.getTitle()}`);
-      });
   }
 }
 
@@ -149,7 +143,8 @@ todosHolder.addEventListener("click", (e) => {
         return true;
       }
     }).dataset.index;
-    getActiveProject().checkTodo(getActiveProject().getTodoCont()[index]);
+    var toCheck = getActiveProject().getTodoCont()[index];
+    getActiveProject().checkTodo(toCheck);
     updateScreen();
   }
 });
@@ -170,7 +165,8 @@ doneDispCont.addEventListener("click", (e) => {
         return true;
       }
     }).dataset.index;
-    getActiveProject().uncheckTodo(getActiveProject().getCompCont()[index]);
+    var toUncheck =  getActiveProject().getCompCont()[index]
+    getActiveProject().uncheckTodo(toUncheck);
     
     updateScreen();
   }
@@ -247,7 +243,6 @@ aside.addEventListener("click", (e) => {
       }
       if (e.target.classList.contains("today-filter")) {
         projectSelected = todayFilter;
-        todayFilter.getTodos(getProjectCont());
       }
       setActiveProject(projectSelected);
     }
@@ -272,8 +267,8 @@ setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 //debugger
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", () => {
+  console.log(getActiveProject().getAllTodo()[0].getTitle())
   console.log(getActiveProject().getTodoCont()[0].getTitle())
-  console.log(getActiveProject().getCompCont()[0].getTitle())
 });
 
 
@@ -281,7 +276,8 @@ logger.addEventListener("click", () => {
 const todoHead = document.querySelector(".todo-header");
 
 todosHolder.addEventListener("click", (e) => {
-  var path = e.composedPath().slice(0, -2);
+  if(!e.target.classList.contains("edit-but") && !e.target.classList.contains("checkbox"))
+  {var path = e.composedPath().slice(0, -2);
   var todo = path.find((item) => {
     if (item.classList.contains("todo-item")) {
       return true;
@@ -290,5 +286,5 @@ todosHolder.addEventListener("click", (e) => {
   if (todo) {
     var notesCont = todo.querySelector(".todo-notes");
     notesCont.classList.toggle("show-notes");
-  }
+  }}
 });
