@@ -10,12 +10,8 @@ function todo(title, notes, date = undefined, priority = "none") {
   function getState() {
     return checked;
   }
-
-  function checkTodo() {
-    checked = true;
-  }
-  function uncheckTodo() {
-    checked = false;
+  function setState(bool){
+    checked = bool;
   }
   function getNotes() {
     if(!notes){
@@ -58,8 +54,6 @@ function todo(title, notes, date = undefined, priority = "none") {
   return {
     getState,
     getTitle,
-    checkTodo,
-    uncheckTodo,
     getNotes,
     getDueDate,
     getPriority,
@@ -67,7 +61,8 @@ function todo(title, notes, date = undefined, priority = "none") {
     setTitle,
     setDueDate,
     setPriority,
-    editTodo
+    editTodo,
+    setState
   };
 }
 

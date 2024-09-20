@@ -7,6 +7,7 @@ function getProjectCont() {
 
 function project(projectName) {
   //todos and completed todos the object holds
+  var allTodo = []
   var todoCont = [];
   var compCont = [];
 
@@ -45,24 +46,34 @@ function project(projectName) {
     deleteTodo(todoItem, todoCont);
   }
 
-  function moveTodo(index) {
-    //moves completed todo to a completed array
-    todoCont[index].checkTodo();
-
-    compCont.unshift(todoCont[index]);
-    todoCont.splice(index, 1);
+  function checkTodo(todo) {
+    todo.setState(true);
+  }
+  function uncheckTodo(todo) {
+    todo.setState(false);
   }
 
-  function moveBackTodo(index) {
-    //moves completed todo to the todo array
-    compCont[index].uncheckTodo();
+  function verifyCheck() {
+    //moves completed todo to a completed array
+    todoCont.forEach((item, index) => {
+      if (item.getState() === true) {
+        console.log("called")
+        compCont.unshift(item);
+        todoCont.splice(index, 1);
+      }
+    });
 
-    todoCont.unshift(compCont[index]);
-    compCont.splice(index, 1);
+    //moves unchecked todo to the todo array
+    compCont.forEach((item, index) => {
+      if (item.getState() === false) {
+        console.log("called");
+        todoCont.unshift(item);
+        compCont.splice(index, 1);
+      }
+    });
   }
 
   function getTodoCont() {
-    
     return todoCont;
   }
 
@@ -75,30 +86,59 @@ function project(projectName) {
     removeTodo,
     getTodoCont,
     getProjectName,
-    moveTodo,
+    verifyCheck,
     getCompCont,
-    moveBackTodo,
     sortTodo,
+    checkTodo,
+    uncheckTodo,
   };
 }
 
 var todayFilter = (function () {
-  const { getTodoCont, getProjectName, getCompCont, moveTodo } = project("Today");
+  const {
+    getTodoCont,
+    getProjectName,
+    getCompCont,
+    checkTodo,
+    uncheckTodo,
+  } = project("Today");
+
+  var allTodo = [];
 
   function getTodos(projectArray) {
-    getTodoCont().splice(0); //cleans array
+    allTodo.splice(0); //cleans array
     projectArray.forEach((project) => {
       project.getTodoCont().forEach((todo) => {
         if (isToday(todo.getDueDate())) {
-          getTodoCont().push(todo);
+          allTodo.push(todo);
         }
-        
       });
     });
-    console.log(getTodoCont());
-    
   }
-  return { getTodoCont, getProjectName, getCompCont, getTodos, moveTodo };
+
+  function verifyCheck() {
+    //alltodo and then sliding todos down to todoCont and CompCOnt should be how projects actually work
+    //TODO
+    allTodo.forEach((item) => {
+      getCompCont().length = 0;
+      getTodoCont().length = 0;
+      if (item.getState() === true) {
+        getCompCont().push(item);
+      }else {
+        getTodoCont().push(item)
+      }
+    });
+  }
+
+  return {
+    getTodoCont,
+    getProjectName,
+    getCompCont,
+    getTodos,
+    verifyCheck,
+    checkTodo,
+    uncheckTodo,
+  };
 })();
 
 function addProject(name) {

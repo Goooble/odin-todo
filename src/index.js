@@ -18,10 +18,9 @@ function getActiveProject() {
 
 
 const quickAddCont = document.querySelector(".quick-add-cont")
+
 function updateScreen(){
-  todayFilter.getTodos(getProjectCont().slice(0));//so that quck adding in-
-  // today filter is immediately reflected
-  //well actually, i am gonna remove the option to add to today coz its really messy
+  getActiveProject().verifyCheck();
 
   if(getActiveProject() === todayFilter){
     //removes quick input box
@@ -30,6 +29,7 @@ function updateScreen(){
     quickAddCont.classList.remove("today-filter-show")
     getActiveProject().sortTodo();
   }
+  
   
   //takes in lot of params, so i thought this would be easier
   updateViewBox(
@@ -149,7 +149,7 @@ todosHolder.addEventListener("click", (e) => {
         return true;
       }
     }).dataset.index;
-    getActiveProject().moveTodo(index);
+    getActiveProject().checkTodo(getActiveProject().getTodoCont()[index]);
     updateScreen();
   }
 });
@@ -170,7 +170,8 @@ doneDispCont.addEventListener("click", (e) => {
         return true;
       }
     }).dataset.index;
-    getActiveProject().moveBackTodo(index);
+    getActiveProject().uncheckTodo(getActiveProject().getCompCont()[index]);
+    
     updateScreen();
   }
 });
@@ -246,7 +247,7 @@ aside.addEventListener("click", (e) => {
       }
       if (e.target.classList.contains("today-filter")) {
         projectSelected = todayFilter;
-        
+        todayFilter.getTodos(getProjectCont().slice(0));
       }
       setActiveProject(projectSelected);
     }
