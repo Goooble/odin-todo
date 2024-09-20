@@ -39,11 +39,11 @@ function project(projectName) {
   }
 
   function addTodo(title, notes, date, priority) {
-    todoCont.unshift(createTodo(title, notes, date, priority));
+    allTodo.unshift(createTodo(title, notes, date, priority));
   }
 
   function removeTodo(todoItem) {
-    deleteTodo(todoItem, todoCont);
+    deleteTodo(todoItem, allTodo);
   }
 
   function checkTodo(todo) {
@@ -54,23 +54,39 @@ function project(projectName) {
   }
 
   function verifyCheck() {
-    //moves completed todo to a completed array
-    todoCont.forEach((item, index) => {
+
+    allTodo.forEach((item) => {
+      compCont.length = 0;
+      todoCont.length = 0;
       if (item.getState() === true) {
-        console.log("called")
-        compCont.unshift(item);
-        todoCont.splice(index, 1);
+        console.log("caled")
+        compCont.push(item);
+      }else {
+        todoCont.push(item)
       }
     });
 
-    //moves unchecked todo to the todo array
-    compCont.forEach((item, index) => {
-      if (item.getState() === false) {
-        console.log("called");
-        todoCont.unshift(item);
-        compCont.splice(index, 1);
-      }
-    });
+    // //moves completed todo to a completed array
+    // todoCont.forEach((item, index) => {
+    //   if (item.getState() === true) {
+    //     console.log("called")
+    //     compCont.unshift(item);
+    //     todoCont.splice(index, 1);
+    //   }
+    // });
+
+    // //moves unchecked todo to the todo array
+    // compCont.forEach((item, index) => {
+    //   if (item.getState() === false) {
+    //     console.log("called");
+    //     todoCont.unshift(item);
+    //     compCont.splice(index, 1);
+    //   }
+    // });
+  }
+
+  function getAllTodo(){
+    return allTodo;
   }
 
   function getTodoCont() {
@@ -91,6 +107,7 @@ function project(projectName) {
     sortTodo,
     checkTodo,
     uncheckTodo,
+    getAllTodo
   };
 }
 

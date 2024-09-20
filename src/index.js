@@ -247,7 +247,7 @@ aside.addEventListener("click", (e) => {
       }
       if (e.target.classList.contains("today-filter")) {
         projectSelected = todayFilter;
-        todayFilter.getTodos(getProjectCont().slice(0));
+        todayFilter.getTodos(getProjectCont());
       }
       setActiveProject(projectSelected);
     }
@@ -272,30 +272,8 @@ setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 //debugger
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", () => {
-  console.log(displayTodoArray[0].getTitle());
-  console.log(getActiveProject().getTodoCont()[0].getTitle());
-  // console.log("todo details:");
-  // console.log(getActiveProject().getTodoCont()[0].getTitle());
-  // console.log(getActiveProject().getTodoCont()[0].getNotes());
-  // console.log(getActiveProject().getTodoCont()[0].getDate());
-  // console.log(getActiveProject().getTodoCont()[0].getPriority());
-
-  // console.log(getProjectCont()[2].getProjectName());
-  // console.log("todo");
-  // getActiveProject()
-  //   .getTodoCont()
-  //   .forEach((item) => {
-  //     console.log(item.getTitle());
-  //     console.log(`--${item.getState()}`);
-  //   });
-  // console.log("completed below");
-  // getActiveProject()
-  //   .getCompCont()
-  //   .forEach((item) => {
-  //     console.log(item.getTitle());
-  //     console.log(`--${item.getState()}`);
-  //   });
-  // console.log("----------");
+  console.log(getActiveProject().getTodoCont()[0].getTitle())
+  console.log(getActiveProject().getCompCont()[0].getTitle())
 });
 
 
