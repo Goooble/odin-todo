@@ -43,6 +43,7 @@ var display = (function () {
         <div class="options-cont">
           <p class="todo-date">${displayDate}</p>
           <button class="edit-but">Edit</button>
+          <button class="del-but">X</button>
         </div>`;
       todoDisplayCont.appendChild(todoItem);
     });
