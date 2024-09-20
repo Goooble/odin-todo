@@ -1,6 +1,6 @@
 import "./reset.css";
 import "./styles.css";
-import { format } from "date-fns";
+import { isAfter } from "date-fns";
 
 //interface between dom and scripts
 import {
@@ -19,8 +19,12 @@ function getActiveProject() {
 
 
 function updateScreen(){
+  sortTodo();
   //takes in lot of params, so i thought this would be easier
   updateViewBox(
+    //slicing this so that a copy is passed, just-
+    //to make sure it isnt changed somehow though it-
+    //shouldnt normally happen lets see
     getActiveProject().getProjectName(),
     getActiveProject().getTodoCont().slice(0),
     getProjectCont().slice(0),
@@ -35,8 +39,26 @@ function setActiveProject(project) {
 
 const aside = document.querySelector("aside");
 
-//event listeners
+function sortTodo(){
+  getActiveProject().getTodoCont().sort( (a, b) => {
+    if(isAfter(a.getDueDate(), b.getDueDate())){
+      return 1;
+    }
+    return -1;
+  })
 
+  //this is to hold todos with no due date at the bottom
+  var numberOfEmpties = getActiveProject().getTodoCont().findIndex((item) => {
+    if(item.getDueDate()){
+      return true;
+    }
+  })
+  var noDueArray = getActiveProject().getTodoCont().splice(0, numberOfEmpties);
+  console.log(noDueArray);
+  noDueArray.forEach((item)=> getActiveProject().getTodoCont().push(item))
+}
+
+//event listeners
 //dialog add todos
 const addTodoBut = document.querySelector(".add-but");
 const dialog = document.querySelector("dialog");

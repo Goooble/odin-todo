@@ -19,6 +19,7 @@ function cleanList(container) {
 }
 
 var display = (function () {
+  
   function displayTodo(array) {
     cleanList(todoDisplayCont);
     array.forEach((item, index) => {
