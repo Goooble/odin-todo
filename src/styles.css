@@ -197,8 +197,7 @@ main{
     text-overflow: none;
 }
 
-.todo-date{
-}
+
 
 main .done-todo-item{
     background-color: #bcbcbc;
@@ -212,3 +211,6 @@ div .show-done-disp-cont{
     display: block;
 }
 
+header div.today-filter-show{
+    display: none;
+}

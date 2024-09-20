@@ -17,8 +17,19 @@ function getActiveProject() {
 }
 
 
-
+const quickAddCont = document.querySelector(".quick-add-cont")
 function updateScreen(){
+  todayFilter.getTodos(getProjectCont().slice(0));//so that quck adding in-
+  // today filter is immediately reflected
+  //well actually, i am gonna remove the option to add to today coz its really messy
+
+  if(getActiveProject() === todayFilter){
+    //removes quick input box
+    quickAddCont.classList.add("today-filter-show");
+  }else{
+    quickAddCont.classList.remove("today-filter-show")
+  }
+
   //takes in lot of params, so i thought this would be easier
   updateViewBox(
     //slicing this so that a copy is passed, just-
@@ -92,7 +103,8 @@ todosHolder.addEventListener("click", (e) => {
   editMode = true;
   if (e.target.classList.contains("edit-but")) {
     dialog.showModal();
-    dialogHandler.updateDiaProjects(getProjectCont());
+    dialogHandler.updateDiaProjects(getProjectCont());//it works without second value-
+    //as editTodoMatch below used projectvalue(index) to get the default option in dia
     brokenTodo =
       getActiveProject().getTodoCont()[
         e.target.parentElement.parentElement.dataset.index
@@ -233,7 +245,7 @@ aside.addEventListener("click", (e) => {
       }
       if (e.target.classList.contains("today-filter")) {
         projectSelected = todayFilter;
-        todayFilter.getTodos(getProjectCont().slice(0));
+        
       }
       setActiveProject(projectSelected);
     }

@@ -1,32 +1,36 @@
 import { createTodo, deleteTodo } from "./todoHandler";
-import { isAfter, isToday } from "date-fns";
+import { format, isAfter, isToday } from "date-fns";
 var projectCont = [];
 function getProjectCont() {
   return projectCont;
 }
-
 
 function project(projectName) {
   //todos and completed todos the object holds
   var todoCont = [];
   var compCont = [];
 
-  function sortTodo(){//this is here coz it changes the todoCont
-    todoCont.sort( (a, b) => {
-      if(isAfter(a.getDueDate(), b.getDueDate())){
-        return 1;
+  function sortTodo() {
+    //this is here coz it changes the todoCont
+    todoCont.sort((a, b) => {
+      if (a.getDueDate() || b.getDueDate()) {
+        //this exists-
+        //coz if it doesnt exist, the no dues todos keep shuffling
+        if (isAfter(a.getDueDate(), b.getDueDate())) {
+          return 1;
+        }
+        return -1;
       }
-      return -1;
-    })
-  
+    });
+
     //this is to hold todos with no due date at the bottom
     var numberOfEmpties = todoCont.findIndex((item) => {
-      if(item.getDueDate()){
+      if (item.getDueDate()) {
         return true;
       }
-    })
+    });
     var noDueArray = todoCont.splice(0, numberOfEmpties);
-    noDueArray.forEach((item)=> todoCont.push(item))
+    noDueArray.forEach((item) => todoCont.push(item));
   }
 
   function getProjectName() {
@@ -34,25 +38,25 @@ function project(projectName) {
   }
 
   function addTodo(title, notes, date, priority) {
-    todoCont.unshift(
-      createTodo(title, notes, date, priority)
-    );
+    todoCont.unshift(createTodo(title, notes, date, priority));
   }
 
   function removeTodo(todoItem) {
     deleteTodo(todoItem, todoCont);
   }
 
-  function moveTodo(index){//moves completed todo to a completed array
+  function moveTodo(index) {
+    //moves completed todo to a completed array
     todoCont[index].checkTodo();
-    
+
     compCont.unshift(todoCont[index]);
     todoCont.splice(index, 1);
   }
 
-  function moveBackTodo(index){//moves completed todo to the todo array
+  function moveBackTodo(index) {
+    //moves completed todo to the todo array
     compCont[index].uncheckTodo();
-    
+
     todoCont.unshift(compCont[index]);
     compCont.splice(index, 1);
   }
@@ -62,7 +66,7 @@ function project(projectName) {
     return todoCont;
   }
 
-  function getCompCont(){
+  function getCompCont() {
     return compCont;
   }
 
@@ -74,24 +78,24 @@ function project(projectName) {
     moveTodo,
     getCompCont,
     moveBackTodo,
-    sortTodo
+    sortTodo,
   };
 }
 
-var todayFilter = (function (){
-  const {getTodoCont, getProjectName, getCompCont} = project("Today");
-  
-  
-  function getTodos(projectArray){
-    getTodoCont().length = 0;//cleans array
+var todayFilter = (function () {
+  const { getTodoCont, getProjectName, getCompCont, moveTodo } = project("Today");
+
+  function getTodos(projectArray) {
+    getTodoCont().length = 0; //cleans array
     projectArray.forEach((project) => {
       project.getTodoCont().forEach((todo) => {
-        if(isToday(todo.getDueDate()))
-        {getTodoCont().push(todo);}
-      })
-    })
+        if (isToday(todo.getDueDate())) {
+          getTodoCont().push(todo);
+        }
+      });
+    });
   }
-  return {getTodoCont, getProjectName, getCompCont, getTodos};
+  return { getTodoCont, getProjectName, getCompCont, getTodos, moveTodo };
 })();
 
 function addProject(name) {
@@ -106,9 +110,4 @@ function deleteProject(project) {
   });
 }
 
-export {
-  addProject,
-  getProjectCont,
-  deleteProject,
-  todayFilter
-};
+export { addProject, getProjectCont, deleteProject, todayFilter };

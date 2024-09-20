@@ -19,16 +19,15 @@ function cleanList(container) {
 }
 
 var display = (function () {
-  
   function displayTodo(array) {
     cleanList(todoDisplayCont);
     array.forEach((item, index) => {
       const todoItem = document.createElement("div");
       todoItem.dataset.index = index; //to keep track off todos in the scripts
       todoItem.className = "todo-item";
-      var displayDate = "";//so that no duedates get displayed as empty string
+      var displayDate = ""; //so that no duedates get displayed as empty string
       //and not as NaN
-      if(item.getDueDate()){
+      if (item.getDueDate()) {
         displayDate = format(item.getDueDate(), "dd-MM-yyyy");
       }
       // if(item.getDueDate()){
@@ -98,7 +97,7 @@ function toggleInput() {
   addProjectInput.classList.toggle("show-input");
 }
 
-function updateViewBox(projectName,todoArray, projectArray, doneTodoCont) {
+function updateViewBox(projectName, todoArray, projectArray, doneTodoCont) {
   display.updateProjectHeader(projectName);
   display.displayTodo(todoArray);
   display.displayProject(projectArray);
@@ -126,6 +125,7 @@ var dialogHandler = (function () {
       option.value = `${projectArray.indexOf(item)}`; //to access proper projects
       option.textContent = item.getProjectName();
       if (projectArray.indexOf(item) === activeProjectIndex) {
+        console.log(activeProjectIndex);
         option.setAttribute("selected", true); //to set active project as default
         //-in the options
       }
@@ -156,7 +156,7 @@ var dialogHandler = (function () {
     //when clicked on edit, same dialog box opens up
     //this acquires the value of the todo being edited in the dialog
     title.value = todo.getTitle();
-    dueDate.value = todo.getDueDate();
+    dueDate.value = format(todo.getDueDate(), "yyyy-MM-dd");
     priority.value = todo.getPriority();
     notes.value = todo.getNotes();
     project.value = projectIndex;
