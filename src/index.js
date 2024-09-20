@@ -187,8 +187,8 @@ addProjectBut.addEventListener("click", () => {
 addProjectInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && addProjectInput.value !== "") {
     addProject(addProjectInput.value);
-    updateScreen();
     cleanInputBox(addProjectInput);
+    updateScreen();
   }
 });
 
