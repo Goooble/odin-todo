@@ -50,6 +50,9 @@ function todo(title, notes, date = undefined, priority = "none") {
     title = name;
     notes = desc;
     dueDate = new Date(date);
+    if(!date){
+      dueDate = null;
+    }
     priority = label;
   }
   return {

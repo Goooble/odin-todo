@@ -65,6 +65,7 @@ dialog.addEventListener("close", () => {
       }
       editMode = false;
     } else {
+      console.log("called");
       getProjectCont()[projectIndex].addTodo(...todoInput);
     }
     updateViewBox(

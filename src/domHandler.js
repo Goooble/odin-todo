@@ -145,6 +145,7 @@ var dialogHandler = (function () {
       dueDate.value,
       priority.value,
     ];
+    console.log(dueDate.value);
     form.reset();
     //making sure only domHandler can access the.. well DOM
     return returnArray;
