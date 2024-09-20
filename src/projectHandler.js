@@ -1,5 +1,5 @@
 import { createTodo, deleteTodo } from "./todoHandler";
-
+import { isAfter, isToday } from "date-fns";
 var projectCont = [];
 function getProjectCont() {
   return projectCont;
@@ -10,6 +10,24 @@ function project(projectName) {
   //todos and completed todos the object holds
   var todoCont = [];
   var compCont = [];
+
+  function sortTodo(){//this is here coz it changes the todoCont
+    todoCont.sort( (a, b) => {
+      if(isAfter(a.getDueDate(), b.getDueDate())){
+        return 1;
+      }
+      return -1;
+    })
+  
+    //this is to hold todos with no due date at the bottom
+    var numberOfEmpties = todoCont.findIndex((item) => {
+      if(item.getDueDate()){
+        return true;
+      }
+    })
+    var noDueArray = todoCont.splice(0, numberOfEmpties);
+    noDueArray.forEach((item)=> todoCont.push(item))
+  }
 
   function getProjectName() {
     return projectName;
@@ -40,6 +58,7 @@ function project(projectName) {
   }
 
   function getTodoCont() {
+    sortTodo();
     return todoCont;
   }
 
@@ -54,9 +73,26 @@ function project(projectName) {
     getProjectName,
     moveTodo,
     getCompCont,
-    moveBackTodo
+    moveBackTodo,
+    sortTodo
   };
 }
+
+var todayFilter = (function (){
+  const {getTodoCont, getProjectName, getCompCont} = project("Today");
+  
+  
+  function getTodos(projectArray){
+    getTodoCont().length = 0;//cleans array
+    projectArray.forEach((project) => {
+      project.getTodoCont().forEach((todo) => {
+        if(isToday(todo.getDueDate()))
+        {getTodoCont().push(todo);}
+      })
+    })
+  }
+  return {getTodoCont, getProjectName, getCompCont, getTodos};
+})();
 
 function addProject(name) {
   projectCont.unshift(project(name));
@@ -73,5 +109,6 @@ function deleteProject(project) {
 export {
   addProject,
   getProjectCont,
-  deleteProject
+  deleteProject,
+  todayFilter
 };

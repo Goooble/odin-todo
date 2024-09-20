@@ -1,6 +1,6 @@
 import "./reset.css";
 import "./styles.css";
-import { isAfter } from "date-fns";
+
 
 //interface between dom and scripts
 import {
@@ -9,7 +9,7 @@ import {
   updateViewBox,
   dialogHandler,
 } from "./domHandler";
-import { addProject, getProjectCont, deleteProject } from "./projectHandler";
+import { addProject, getProjectCont, deleteProject, todayFilter } from "./projectHandler";
 
 var activeProject; //to know which project is currently on the main
 function getActiveProject() {
@@ -19,7 +19,6 @@ function getActiveProject() {
 
 
 function updateScreen(){
-  sortTodo();
   //takes in lot of params, so i thought this would be easier
   updateViewBox(
     //slicing this so that a copy is passed, just-
@@ -39,24 +38,7 @@ function setActiveProject(project) {
 
 const aside = document.querySelector("aside");
 
-function sortTodo(){
-  getActiveProject().getTodoCont().sort( (a, b) => {
-    if(isAfter(a.getDueDate(), b.getDueDate())){
-      return 1;
-    }
-    return -1;
-  })
 
-  //this is to hold todos with no due date at the bottom
-  var numberOfEmpties = getActiveProject().getTodoCont().findIndex((item) => {
-    if(item.getDueDate()){
-      return true;
-    }
-  })
-  var noDueArray = getActiveProject().getTodoCont().splice(0, numberOfEmpties);
-  console.log(noDueArray);
-  noDueArray.forEach((item)=> getActiveProject().getTodoCont().push(item))
-}
 
 //event listeners
 //dialog add todos
@@ -68,7 +50,6 @@ const todosHolder = document.querySelector(".todo-disp-cont");
 
 addTodoBut.addEventListener("click", () => {
   dialog.showModal();
-  console.log(getProjectCont())
   dialogHandler.updateDiaProjects(getProjectCont().slice(0), getProjectCont().indexOf(getActiveProject()));
   dialogHandler.matchInputBox();
 });
@@ -213,7 +194,7 @@ addProject("Work");
 getProjectCont()[2].addTodo(
   "inbox - hello",
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus animi consequuntur repudiandae debitis perspiciatis molestias quibusdam ad molestiae fuga libero. Maxime accusamus quisquam illum veniam expedita omnis enim eligendi sapiente?",
-  "2024-09-21"
+  "2024-09-20"
 );
 getProjectCont()[2].addTodo("inbox - wassup", "");
 getProjectCont()[2].addTodo("school - hello", "");
@@ -249,6 +230,10 @@ aside.addEventListener("click", (e) => {
       projectSelected = getProjectCont()[+projectItem.dataset.index];
       if (e.target.classList.contains("inbox")) {
         projectSelected = getProjectCont()[getProjectCont().length - 1];
+      }
+      if (e.target.classList.contains("today-filter")) {
+        projectSelected = todayFilter;
+        todayFilter.getTodos(getProjectCont().slice(0));
       }
       setActiveProject(projectSelected);
     }
