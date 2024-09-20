@@ -6,9 +6,6 @@ function getProjectCont() {
 }
 
 
-
-
-
 function project(projectName) {
   //todos and completed todos the object holds
   var todoCont = [];

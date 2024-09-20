@@ -16,13 +16,21 @@ function getActiveProject() {
   return activeProject;
 }
 
+
+
+function updateScreen(){
+  //takes in lot of params, so i thought this would be easier
+  updateViewBox(
+    getActiveProject().getProjectName(),
+    getActiveProject().getTodoCont().slice(0),
+    getProjectCont().slice(0),
+    getActiveProject().getCompCont().slice(0)
+  );
+}
+
 function setActiveProject(project) {
   activeProject = project;
-  updateViewBox(
-    getActiveProject(),
-    getProjectCont(),
-    getActiveProject().getCompCont()
-  );
+  updateScreen();
 }
 
 const aside = document.querySelector("aside");
@@ -38,7 +46,8 @@ const todosHolder = document.querySelector(".todo-disp-cont");
 
 addTodoBut.addEventListener("click", () => {
   dialog.showModal();
-  dialogHandler.updateDiaProjects(getProjectCont());
+  console.log(getProjectCont())
+  dialogHandler.updateDiaProjects(getProjectCont().slice(0), getProjectCont().indexOf(getActiveProject()));
   dialogHandler.matchInputBox();
 });
 
@@ -65,14 +74,9 @@ dialog.addEventListener("close", () => {
       }
       editMode = false;
     } else {
-      console.log("called");
       getProjectCont()[projectIndex].addTodo(...todoInput);
     }
-    updateViewBox(
-      getActiveProject(),
-      getProjectCont(),
-      getActiveProject().getCompCont()
-    );
+    updateScreen();
     cleanInputBox(inputBox);
     dialog.returnValue = "init"; //resetting this value for the next add
   }
@@ -107,11 +111,7 @@ function quickAdd(e) {
   if (e.key === "Enter" && inputBox.value !== "") {
     getActiveProject().addTodo(inputBox.value);
     cleanInputBox(inputBox);
-    updateViewBox(
-      getActiveProject(),
-      getProjectCont(),
-      getActiveProject().getCompCont()
-    );
+    updateScreen();
     //debugging
     console.log(getActiveProject().getProjectName());
     getActiveProject()
@@ -134,11 +134,7 @@ todosHolder.addEventListener("click", (e) => {
       }
     }).dataset.index;
     getActiveProject().moveTodo(index);
-    updateViewBox(
-      getActiveProject(),
-      getProjectCont(),
-      getActiveProject().getCompCont()
-    );
+    updateScreen();
   }
 });
 
@@ -146,11 +142,7 @@ todosHolder.addEventListener("click", (e) => {
 showDoneBut.addEventListener("click", (e) => {
   doneDispCont.classList.toggle("show-done-disp-cont");
   if (doneDispCont.classList.contains("show-done-disp-cont")) {
-    updateViewBox(
-      getActiveProject(),
-      getProjectCont(),
-      getActiveProject().getCompCont()
-    );
+    updateScreen();
   }
 });
 
@@ -163,11 +155,7 @@ doneDispCont.addEventListener("click", (e) => {
       }
     }).dataset.index;
     getActiveProject().moveBackTodo(index);
-    updateViewBox(
-      getActiveProject(),
-      getProjectCont(),
-      getActiveProject().getCompCont()
-    );
+    updateScreen();
   }
 });
 
@@ -184,11 +172,7 @@ addProjectBut.addEventListener("click", () => {
 addProjectInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter" && addProjectInput.value !== "") {
     addProject(addProjectInput.value);
-    updateViewBox(
-      getActiveProject(),
-      getProjectCont(),
-      getActiveProject().getCompCont()
-    );
+    updateScreen();
     cleanInputBox(addProjectInput);
   }
 });
@@ -264,11 +248,11 @@ aside.addEventListener("click", (e) => {
 
 //default
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
-
 //debugger
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", () => {
-  console.log(format(new Date("2014-01-22"), "LL/dd/yyyy"))
+  console.log(displayTodoArray[0].getTitle());
+  console.log(getActiveProject().getTodoCont()[0].getTitle());
   // console.log("todo details:");
   // console.log(getActiveProject().getTodoCont()[0].getTitle());
   // console.log(getActiveProject().getTodoCont()[0].getNotes());
@@ -292,6 +276,8 @@ logger.addEventListener("click", () => {
   //   });
   // console.log("----------");
 });
+
+
 //show notes
 const todoHead = document.querySelector(".todo-header");
 

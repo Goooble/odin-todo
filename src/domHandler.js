@@ -97,9 +97,9 @@ function toggleInput() {
   addProjectInput.classList.toggle("show-input");
 }
 
-function updateViewBox(project, projectArray, doneTodoCont) {
-  display.updateProjectHeader(project.getProjectName());
-  display.displayTodo(project.getTodoCont());
+function updateViewBox(projectName,todoArray, projectArray, doneTodoCont) {
+  display.updateProjectHeader(projectName);
+  display.displayTodo(todoArray);
   display.displayProject(projectArray);
   display.displayDoneTodo(doneTodoCont); //need to put it here so that
   //it not only displays when clicked on show button but also when
@@ -115,17 +115,18 @@ var dialogHandler = (function () {
   const project = document.querySelector("dialog #project");
   const notes = document.querySelector("dialog #notes");
 
-  function updateDiaProjects(projectArray) {
+  function updateDiaProjects(projectArray, activeProjectIndex) {
     //this is the project select option in dialog
     cleanList(project);
     //reversingso the appends happen in the same order
     //-as the projects displayed in the sidebar
-    for (let item of projectArray.toReversed()) {
+    for (let item of projectArray) {
       const option = document.createElement("option");
       option.value = `${projectArray.indexOf(item)}`; //to access proper projects
       option.textContent = item.getProjectName();
-      if (projectArray.toReversed().indexOf(item) === 0) {
-        option.setAttribute("selected", true); //to set index as default
+      if (projectArray.indexOf(item) === activeProjectIndex) {
+        option.setAttribute("selected", true); //to set active project as default
+        //-in the options
       }
       project.appendChild(option);
     }
@@ -145,7 +146,6 @@ var dialogHandler = (function () {
       dueDate.value,
       priority.value,
     ];
-    console.log(dueDate.value);
     form.reset();
     //making sure only domHandler can access the.. well DOM
     return returnArray;
