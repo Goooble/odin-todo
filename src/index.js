@@ -83,9 +83,9 @@ dialog.addEventListener("close", () => {
     const [projectIndex, ...todoInput] = dialogHandler.getDiaInput();
     if (editMode === true) {
       if (getProjectCont()[projectIndex] !== getActiveProject()) {
-        console.log("hello there")
+        console.log("hello there");
         //if some other project is selected, the todo gets moved
-        var preProjectIndex;//stores the index of project of the original
+        var preProjectIndex; //stores the index of project of the original
         //project the todo belonged to, to splice it
         getProjectCont().forEach((project) => {
           //finds the preproject
@@ -96,10 +96,13 @@ dialog.addEventListener("close", () => {
           });
         });
 
-        getProjectCont()[preProjectIndex]
-          .getAllTodo()
-          .splice(getProjectCont()[preProjectIndex].getAllTodo().indexOf(brokenTodo), 1);
-        
+        getProjectCont()
+          [preProjectIndex].getAllTodo()
+          .splice(
+            getProjectCont()[preProjectIndex].getAllTodo().indexOf(brokenTodo),
+            1
+          );
+
         getProjectCont()[projectIndex].addTodo(...todoInput);
       } else {
         brokenTodo.editTodo(...todoInput);
@@ -192,8 +195,28 @@ doneDispCont.addEventListener("click", (e) => {
   }
 });
 
-
-
+//delete todo's
+todosHolder.addEventListener("click", (e) => {
+  var toDelTodo;
+  if (e.target.classList.contains("del-but")) {
+    if(confirm("Do you wanna delete this todo?")){toDelTodo =
+      getActiveProject().getTodoCont()[
+        e.target.parentElement.parentElement.dataset.index
+      ];
+      console.log(toDelTodo)
+    var projectIndex; //to get project index for both filter and projects
+    getProjectCont().forEach((project) => {
+      project.getAllTodo().forEach((item) => {
+        if (item === toDelTodo) {
+          projectIndex = getProjectCont().indexOf(project);
+        }
+      });
+    });
+    console.log(getProjectCont()[projectIndex]);
+    getProjectCont()[projectIndex].removeTodo(toDelTodo);
+    updateScreen();}
+  }
+});
 
 //add projects
 const addProjectBut = document.querySelector(".add-project-but");

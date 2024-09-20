@@ -62,7 +62,8 @@ function todo(title, notes, date = undefined, priority = "none") {
     setDueDate,
     setPriority,
     editTodo,
-    setState
+    setState,
+    
   };
 }
 
@@ -70,12 +71,5 @@ function createTodo(title, notes, date, priority) {
   return todo(title, notes, date, priority);
 }
 
-function deleteTodo(todo, cont) {
-  cont.forEach((item, index) => {
-    if (item === todo) {
-      cont.splice(index, 1);
-    }
-  });
-}
 
-export { createTodo, deleteTodo };
+export { createTodo };

@@ -43,7 +43,14 @@ function project(projectName) {
   }
 
   function removeTodo(todoItem) {
-    deleteTodo(todoItem, allTodo);
+    var todoIndex;
+    console.log("called")
+    allTodo.forEach((item, index) => {
+      if (item === todoItem) {
+        todoIndex = index;
+      }
+    });
+    allTodo.splice(todoIndex, 1);
   }
 
   function checkTodo(todo) {
