@@ -13,7 +13,7 @@ when passing arrays to domHandler like this with references inside, make sure yo
 
 to toglge bool: bool = !bool
 
-duplicating array: .slice(0)
+duplicating array: .slice(0) but this creates shallow copies but i wanted deep copies lmao
 
 decisions should be made from the most intrinsic values and not extrinsic ones, like displaying checked todos must be done from checking the state of the todo itself, not moving these todos in an array when they are checked
 

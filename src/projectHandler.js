@@ -38,8 +38,8 @@ function project(projectName) {
     return projectName;
   }
 
-  function addTodo(title, notes, date, priority, checklist) {
-    allTodo.unshift(createTodo(title, notes, date, priority, checklist));
+  function addTodo(title, notes, date, priority, checklist, state) {
+    allTodo.unshift(createTodo(title, notes, date, priority, checklist, state));
   }
 
   function removeTodo(todoItem) {

@@ -1,16 +1,22 @@
-function todo(title, notes, date = undefined, priority = "none", checklistCont = []) {
-  var checked = false;
+function todo(
+  title,
+  notes,
+  date = undefined,
+  priority = "none",
+  checklistCont = [],
+  state = false
+) {
+  var checked = state;
   var dueDate = new Date(date);
-  if(!date){
+  if (!date) {
     dueDate = null;
   }
-  function getChecklistCont(){
-    return checklistCont
+  function getChecklistCont() {
+    return checklistCont;
   }
-  function removeSubTask(index){
+  function removeSubTask(index) {
     checklistCont.splice(index, 1);
     console.log(checklistCont);
-  
   }
   function getTitle() {
     return title;
@@ -18,12 +24,12 @@ function todo(title, notes, date = undefined, priority = "none", checklistCont =
   function getState() {
     return checked;
   }
-  function setState(bool){
+  function setState(bool) {
     checked = bool;
   }
   function getNotes() {
-    if(!notes){
-        return "";
+    if (!notes) {
+      return "";
     }
     return notes;
   }
@@ -31,8 +37,8 @@ function todo(title, notes, date = undefined, priority = "none", checklistCont =
     return dueDate;
   }
   function getPriority() {
-    if(!priority){
-        return "none";
+    if (!priority) {
+      return "none";
     }
     return priority;
   }
@@ -50,11 +56,11 @@ function todo(title, notes, date = undefined, priority = "none", checklistCont =
     priority = info;
   }
 
-  function editTodo(name, desc, date, label, checklist = []){
+  function editTodo(name, desc, date, label, checklist = []) {
     title = name;
     notes = desc;
     dueDate = new Date(date);
-    if(!date){
+    if (!date) {
       dueDate = null;
     }
     priority = label;
@@ -73,13 +79,12 @@ function todo(title, notes, date = undefined, priority = "none", checklistCont =
     editTodo,
     setState,
     getChecklistCont,
-    removeSubTask
+    removeSubTask,
   };
 }
 
-function createTodo(title, notes, date, priority, checklist) {
-  return todo(title, notes, date, priority, checklist);
+function createTodo(title, notes, date, priority, checklist, state) {
+  return todo(title, notes, date, priority, checklist, state);
 }
-
 
 export { createTodo };

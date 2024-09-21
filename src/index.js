@@ -16,6 +16,8 @@ import {
   todayFilter,
 } from "./projectHandler";
 
+
+
 var activeProject; //to know which project is currently on the main
 function getActiveProject() {
   return activeProject;
@@ -26,7 +28,7 @@ const quickAddCont = document.querySelector(".quick-add-cont");
 function updateScreen() {
   todayFilter.getTodos(getProjectCont());
   getActiveProject().verifyCheck();
-
+  
   if (getActiveProject() === todayFilter) {
     //removes quick input box
     quickAddCont.classList.add("today-filter-show");
@@ -45,6 +47,7 @@ function updateScreen() {
     getProjectCont().slice(0),
     getActiveProject().getCompCont().slice(0)
   );
+  store()
 }
 
 function setActiveProject(project) {
@@ -112,7 +115,8 @@ dialog.addEventListener("close", () => {
 
       if (
         getProjectCont()[projectIndex] !== getProjectCont()[preProjectIndex]
-      ) {//if preproject and selected project are different, moving to a diffrent project and removing it fromthe current
+      ) {
+        //if preproject and selected project are different, moving to a diffrent project and removing it fromthe current
         console.log("hello there");
         //if some other project is selected, the todo gets moved
 
@@ -362,12 +366,63 @@ aside.addEventListener("click", (e) => {
 });
 
 //default
+getData();
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
+
+
+
+function store() {
+  localStorage.clear();
+  var projectCont = [];
+  getProjectCont().forEach((project, proIndex) => {
+    var todoContObj = [];
+
+    project.getAllTodo().forEach((todo, index) => {
+      todoContObj[index] = {
+        state: todo.getState(),
+        title: todo.getTitle(),
+        notes: todo.getNotes(),
+        dueDate: todo.getDueDate(),
+        priority: todo.getPriority(),
+        checklist: todo.getChecklistCont(),
+      };
+    });
+    projectCont[proIndex] = {
+      allTodo: todoContObj,
+      name: project.getProjectName(),
+    };
+  });
+
+  localStorage.setItem("json", JSON.stringify(projectCont));
+  console.log("store")
+}
+
+function getData() {
+  var data;
+  getProjectCont().length = 0;
+  data = JSON.parse(localStorage.getItem("json"));
+  data.toReversed().forEach((item, index) => {
+    addProject(item.name);
+    item.allTodo.toReversed().forEach((item) => {
+      getProjectCont()[index].addTodo(
+        item.title,
+        item.notes,
+        item.dueDate,
+        item.priority,
+        item.checklist,
+        item.state
+      );
+    });
+  });
+  return data;
+}
+
+
 //debugger
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", () => {
-  console.log(getActiveProject().getAllTodo()[0].getTitle());
-  console.log(getActiveProject().getTodoCont()[0].getTitle());
+  getData();
+  console.table(data);
 });
 
 //show notes
