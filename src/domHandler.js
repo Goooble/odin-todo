@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isPast } from "date-fns";
 const todoDisplayCont = document.querySelector(".todo-disp-cont");
 const projectListCont = document.querySelector("aside");
 
@@ -27,9 +27,15 @@ var display = (function () {
       todoItem.className = "todo-item";
       var displayDate = ""; //so that no duedates get displayed as empty string
       //and not as NaN
+
+      var fontCol = "black"
       if (item.getDueDate()) {
         displayDate = format(item.getDueDate(), "dd-MM-yyyy");
+        if(isPast(item.getDueDate())){
+          fontCol = "red";
+        }
       }
+      
       // if(item.getDueDate()){
       //   displayDate = format(item.getDueDate(), "DD/MM/YYYY");
       // }
@@ -38,6 +44,9 @@ var display = (function () {
           <div class="todo-header">
             <p>${item.getTitle()}</p>
             <p class = "todo-notes">${item.getNotes()}</p>
+          <div class = "todo-sub-cont">
+    
+          </div>
           </div>
         </div>
         <div class="options-cont">
@@ -45,7 +54,32 @@ var display = (function () {
           <button class="edit-but">Edit</button>
           <button class="del-but">X</button>
         </div>`;
+        //priority color
+        var bordCol;
+        switch(item.getPriority()){
+          case "none": bordCol = "white";
+          break;
+          case "low": bordCol = "grey";
+          break;
+          case "medium": bordCol = "cyan";
+          break;
+          case "high": bordCol = "red";
+          break;
+        }
+        todoItem.style.borderLeft = `5px solid ${bordCol}`;
+        //dueDate
+        todoItem.style.color = fontCol;
+
+        //checklist
       todoDisplayCont.appendChild(todoItem);
+      item.getChecklistCont().forEach((item, index) => {
+        const subCont = todoItem.querySelector(".todo-sub-cont");
+        const subItem = document.createElement("div");
+        subItem.className = "sub-item";
+        subItem.dataset.index = index;
+        subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item}</p> <div><button class="sub-task-del">X</button>`;
+        subCont.appendChild(subItem);
+      });
     });
   }
 
@@ -115,6 +149,16 @@ var dialogHandler = (function () {
   const priority = document.querySelector("dialog #priority");
   const project = document.querySelector("dialog #project");
   const notes = document.querySelector("dialog #notes");
+  const checklistInput = document.querySelector("#checklist-input");
+  const checklistCont = document.querySelector(".checklist-cont");
+
+  function getDiaChecklist(){
+    var array = [];
+    Array.from(checklistCont.children).forEach((item) => {
+      array.push(item.textContent)
+    })
+    return array;
+  }
 
   function updateDiaProjects(projectArray, activeProjectIndex) {
     //this is the project select option in dialog
@@ -126,7 +170,6 @@ var dialogHandler = (function () {
       option.value = `${projectArray.indexOf(item)}`; //to access proper projects
       option.textContent = item.getProjectName();
       if (projectArray.indexOf(item) === activeProjectIndex) {
-        
         option.setAttribute("selected", true); //to set active project as default
         //-in the options
       }
@@ -158,15 +201,29 @@ var dialogHandler = (function () {
     //this acquires the value of the todo being edited in the dialog
     title.value = todo.getTitle();
     dueDate.value = format(todo.getDueDate(), "yyyy-MM-dd");
-    if(todo.getDueDate() === null){
+    if (todo.getDueDate() === null) {
       dueDate.value = "";
     }
     priority.value = todo.getPriority();
     notes.value = todo.getNotes();
     project.value = projectIndex;
+    todo.getChecklistCont().forEach((item) => updateDiaChecklist(item))
+  }
+  function updateDiaChecklist(value) {
+    var subtask = document.createElement("div");
+    subtask.className = "subtask-item";
+    subtask.innerText = value;
+    checklistCont.appendChild(subtask);
   }
 
-  return { getDiaInput, editTodoMatch, updateDiaProjects, matchInputBox };
+  return {
+    getDiaInput,
+    editTodoMatch,
+    updateDiaProjects,
+    matchInputBox,
+    updateDiaChecklist,
+    getDiaChecklist
+  };
 })();
 
-export { toggleInput, cleanInputBox, updateViewBox, dialogHandler };
+export { toggleInput, cleanInputBox, updateViewBox, dialogHandler, cleanList };

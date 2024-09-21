@@ -16,3 +16,6 @@ to toglge bool: bool = !bool
 duplicating array: .slice(0)
 
 decisions should be made from the most intrinsic values and not extrinsic ones, like displaying checked todos must be done from checking the state of the todo itself, not moving these todos in an array when they are checked
+
+```<button type="submit" disabled style="display: none" aria-hidden="true"></button>```
+to disable form submit on enter https://stackoverflow.com/a/51507806

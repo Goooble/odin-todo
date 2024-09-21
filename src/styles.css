@@ -214,3 +214,15 @@ div .show-done-disp-cont{
 header div.today-filter-show{
     display: none;
 }
+
+.subtask-item{
+    display: flex;
+    gap: 20px;
+}
+
+.sub-item{
+    display: flex;
+    color: rgb(38, 38, 38);
+    font-size:0.8rem;
+    gap: 10px;
+}

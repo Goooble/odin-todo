@@ -7,6 +7,7 @@ import {
   toggleInput,
   updateViewBox,
   dialogHandler,
+  cleanList,
 } from "./domHandler";
 import {
   addProject,
@@ -60,6 +61,7 @@ const dialog = document.querySelector("dialog");
 const closeDiaBut = document.querySelector("dialog .close-but");
 const inputBox = document.querySelector("header input");
 const todosHolder = document.querySelector(".todo-disp-cont");
+const checklistInput = document.querySelector("#checklist-input");
 
 addTodoBut.addEventListener("click", () => {
   dialog.showModal();
@@ -74,27 +76,45 @@ closeDiaBut.addEventListener("click", () => {
   dialog.close();
 });
 
+//add subtasks
+const subCont = document.querySelector(".checklist-cont");
+
+checklistInput.addEventListener("keydown", (e) => {
+  //prevents user from entering blank todos
+  if (e.key === "Enter" && checklistInput.value !== "") {
+    dialogHandler.updateDiaChecklist(checklistInput.value);
+    cleanInputBox(checklistInput);
+  }
+});
+
 var editMode = false; //to ensure the submit was done by an edit and not an add
 var brokenTodo;
 //this works for both editing and adding using the above to variables
 dialog.addEventListener("close", () => {
+  var checklistArray = [];
   if (dialog.returnValue === "Submit") {
+    checklistArray = dialogHandler.getDiaChecklist();
     //to extract project index value seperately
     const [projectIndex, ...todoInput] = dialogHandler.getDiaInput();
+
     if (editMode === true) {
-      if (getProjectCont()[projectIndex] !== getActiveProject()) {
+      //for today-filter
+      var preProjectIndex; //stores the index of project of the original
+      //project the todo belonged to, to splice it
+      getProjectCont().forEach((project) => {
+        //finds the preproject
+        project.getAllTodo().forEach((item) => {
+          if (item === brokenTodo) {
+            preProjectIndex = getProjectCont().indexOf(project);
+          }
+        });
+      });
+
+      if (
+        getProjectCont()[projectIndex] !== getProjectCont()[preProjectIndex]
+      ) {//if preproject and selected project are different, moving to a diffrent project and removing it fromthe current
         console.log("hello there");
         //if some other project is selected, the todo gets moved
-        var preProjectIndex; //stores the index of project of the original
-        //project the todo belonged to, to splice it
-        getProjectCont().forEach((project) => {
-          //finds the preproject
-          project.getAllTodo().forEach((item) => {
-            if (item === brokenTodo) {
-              preProjectIndex = getProjectCont().indexOf(project);
-            }
-          });
-        });
 
         getProjectCont()
           [preProjectIndex].getAllTodo()
@@ -102,13 +122,16 @@ dialog.addEventListener("close", () => {
             getProjectCont()[preProjectIndex].getAllTodo().indexOf(brokenTodo),
             1
           );
-
-        getProjectCont()[projectIndex].addTodo(...todoInput);
+        console.log(checklistArray);
+        getProjectCont()[projectIndex].addTodo(...todoInput, checklistArray);
       } else {
-        brokenTodo.editTodo(...todoInput);
+        brokenTodo.editTodo(...todoInput, checklistArray);
       }
     } else {
-      getProjectCont()[projectIndex].addTodo(...todoInput);
+      getProjectCont()[projectIndex].addTodo(
+        ...todoInput,
+        checklistArray.slice(0)
+      );
     }
     updateScreen();
     cleanInputBox(inputBox);
@@ -116,6 +139,8 @@ dialog.addEventListener("close", () => {
   }
   editMode = false; //if dialog is closed by something other than submit
   //for ex: after editing, user pressed cancel
+
+  cleanList(subCont);
 });
 
 // edit todos
@@ -159,7 +184,7 @@ function quickAdd(e) {
 const showDoneBut = document.querySelector(".show-done");
 const doneDispCont = document.querySelector(".done-disp-cont");
 todosHolder.addEventListener("click", (e) => {
-  if (e.target.tagName === "INPUT") {
+  if (e.target.classList.contains("checkbox")) {
     var index = e.composedPath().find((item) => {
       //to get index
       if (item.classList.contains("todo-item")) {
@@ -199,22 +224,47 @@ doneDispCont.addEventListener("click", (e) => {
 todosHolder.addEventListener("click", (e) => {
   var toDelTodo;
   if (e.target.classList.contains("del-but")) {
-    if(confirm("Do you wanna delete this todo?")){toDelTodo =
-      getActiveProject().getTodoCont()[
-        e.target.parentElement.parentElement.dataset.index
-      ];
-      console.log(toDelTodo)
-    var projectIndex; //to get project index for both filter and projects
-    getProjectCont().forEach((project) => {
-      project.getAllTodo().forEach((item) => {
-        if (item === toDelTodo) {
-          projectIndex = getProjectCont().indexOf(project);
-        }
+    if (confirm("Do you wanna delete this todo?")) {
+      toDelTodo =
+        getActiveProject().getTodoCont()[
+          e.target.parentElement.parentElement.dataset.index
+        ];
+      console.log(toDelTodo);
+      var projectIndex; //to get project index for both filter and projects
+      getProjectCont().forEach((project) => {
+        project.getAllTodo().forEach((item) => {
+          if (item === toDelTodo) {
+            projectIndex = getProjectCont().indexOf(project);
+          }
+        });
       });
+      console.log(getProjectCont()[projectIndex]);
+      getProjectCont()[projectIndex].removeTodo(toDelTodo);
+      updateScreen();
+    }
+  }
+});
+
+//delete subtodos
+todosHolder.addEventListener("click", (e) => {
+  var toDelTodo;
+  if (e.target.classList.contains("sub-task-del")) {
+    var shortArray = e.composedPath().slice(0, -2); //removes document and window
+    var todoIndex; //stores the index of todo
+    shortArray.forEach((item) => {
+      if (item.classList.contains("todo-item")) {
+        todoIndex = item.dataset.index;
+      }
     });
-    console.log(getProjectCont()[projectIndex]);
-    getProjectCont()[projectIndex].removeTodo(toDelTodo);
-    updateScreen();}
+    var subTaskIndex;
+    shortArray.forEach((item) => {
+      if (item.classList.contains("sub-item")) {
+        subTaskIndex = item.dataset.index;
+      }
+    });
+    toDelTodo = getActiveProject().getTodoCont()[todoIndex];
+    toDelTodo.removeSubTask(subTaskIndex);
+    updateScreen();
   }
 });
 
@@ -252,7 +302,10 @@ getProjectCont()[2].addTodo(
   "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus animi consequuntur repudiandae debitis perspiciatis molestias quibusdam ad molestiae fuga libero. Maxime accusamus quisquam illum veniam expedita omnis enim eligendi sapiente?",
   "2024-09-20"
 );
-getProjectCont()[2].addTodo("inbox - wassup", "");
+getProjectCont()[2].addTodo("inbox - wassup", "", undefined, "none", [
+  "holy",
+  "inception",
+]);
 getProjectCont()[2].addTodo("school - hello", "");
 getProjectCont()[2].addTodo("school - wassup", "");
 getProjectCont()[2].addTodo("work - hello", "");

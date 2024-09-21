@@ -27,6 +27,7 @@
       </div>
       <dialog>
         <form action="" method="dialog">
+          <button type="submit" disabled style="display: none" aria-hidden="true"></button>
           <label for="title">Title:</label>
           <input
             type="text"
@@ -49,6 +50,10 @@
             <!-- even selected would need to be updated every round -->
             <!-- set this up using js including inbox to use index in value-->
           </select>
+          <label for="checklist-input">Add subtasks</label><input type="text" id="checklist-input" placeholder="name of the subtask">
+          <div class="checklist-cont">
+            
+          </div>
           <label for="notes">Notes:</label>
           <textarea
             type="text"
