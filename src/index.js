@@ -124,20 +124,19 @@ dialog.addEventListener("close", () => {
             getProjectCont()[preProjectIndex].getAllTodo().indexOf(brokenTodo),
             1
           );
-        getProjectCont()[projectIndex].addTodo(...todoInput, checklistArray);
+        getProjectCont()[projectIndex].addTodo(...todoInput);
         getProjectCont()
           [projectIndex].getAllTodo()[0]
           .createSubtask(checklistArray);
       } else {
-        brokenTodo.editTodo(...todoInput, checklistArray);
+        brokenTodo.editTodo(...todoInput);
         getProjectCont()
           [projectIndex].getAllTodo()[0]
           .createSubtask(checklistArray);
       }
     } else {
       getProjectCont()[projectIndex].addTodo(
-        ...todoInput,
-        checklistArray.slice(0)
+        ...todoInput
       );
 
       getProjectCont()
@@ -421,8 +420,7 @@ function store() {
         notes: todo.getNotes(),
         dueDate: todo.getDueDate(),
         priority: todo.getPriority(),
-        checklist: todo.getChecklistCont(),
-        checklistCont: checklistObj,
+        checklistCont: checklistObj
       };
     });
     projectCont[proIndex] = {
@@ -446,7 +444,6 @@ function getData() {
         item.notes,
         item.dueDate,
         item.priority,
-        item.checklist,
         item.state
       );
 

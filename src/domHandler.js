@@ -89,14 +89,6 @@ var display = (function () {
         }
         subCont.appendChild(subItem);
       });
-      // item.getChecklistCont().forEach((item, index) => {
-      //   const subCont = todoItem.querySelector(".todo-sub-cont");
-      //   const subItem = document.createElement("div");
-      //   subItem.className = "sub-item";
-      //   subItem.dataset.index = index;
-      //   subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item}</p> <div><button class="sub-task-del">X</button>`;
-      //   subCont.appendChild(subItem);
-      // });
     });
   }
 
@@ -224,7 +216,7 @@ var dialogHandler = (function () {
     priority.value = todo.getPriority();
     notes.value = todo.getNotes();
     project.value = projectIndex;
-    todo.getChecklistCont().forEach((item) => updateDiaChecklist(item));
+    todo.getNewChecklist().forEach((item) => updateDiaChecklist(item));
   }
   function updateDiaChecklist(value) {
     var subtask = document.createElement("div");
