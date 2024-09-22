@@ -28,8 +28,8 @@ var display = (function () {
       var displayDate = ""; //so that no duedates get displayed as empty string
       //and not as NaN
 
-      var fontCol = "black";
-      if (item.getDueDate()) {
+      var fontCol = "black";//default
+      if (item.getDueDate()) {//visual indicator for missing due date
         displayDate = format(item.getDueDate(), "dd-MM-yyyy");
         if (isPast(item.getDueDate())) {
           fontCol = "red";
@@ -83,7 +83,7 @@ var display = (function () {
         subItem.dataset.index = index;
         subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item.getTitle()}</p> <div><button class="sub-task-del">X</button>`;
         if (item.getState() === true) {
-          console.log("called")
+          //to display as checked whenthe state of the subtask is checked
           const checkBox = subItem.querySelector(".sub-task-checkbox")
           checkBox.setAttribute("checked", true);
         }
@@ -133,7 +133,7 @@ var display = (function () {
   return { displayTodo, displayProject, updateProjectHeader, displayDoneTodo };
 })();
 
-//for the add button to switch to input after clicked
+//for the add button to switch to input after clicked(project)
 function toggleInput() {
   const addProjectBut = document.querySelector(".add-project-but");
   const addProjectInput = document.querySelector("aside input");

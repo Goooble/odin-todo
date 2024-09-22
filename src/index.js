@@ -26,7 +26,7 @@ const quickAddCont = document.querySelector(".quick-add-cont");
 function updateScreen() {
   todayFilter.getTodos(getProjectCont());
   getActiveProject().verifyCheck();
-
+  
   if (getActiveProject() === todayFilter) {
     //removes quick input box
     quickAddCont.classList.add("today-filter-show");
@@ -64,15 +64,16 @@ const inputBox = document.querySelector("header input");
 const todosHolder = document.querySelector(".todo-disp-cont");
 const checklistInput = document.querySelector("#checklist-input");
 
+//opens dialog
 addTodoBut.addEventListener("click", () => {
   dialog.showModal();
   dialogHandler.updateDiaProjects(
-    getProjectCont().slice(0),
+    getProjectCont(),
     getProjectCont().indexOf(getActiveProject())
   );
   dialogHandler.matchInputBox();
 });
-
+//closes dialog when clicking close button
 closeDiaBut.addEventListener("click", () => {
   dialog.close();
 });
@@ -115,7 +116,7 @@ dialog.addEventListener("close", () => {
         getProjectCont()[projectIndex] !== getProjectCont()[preProjectIndex]
       ) {
         //if preproject and selected project are different, moving to a diffrent project and removing it fromthe current
-        console.log("hello there");
+        
         //if some other project is selected, the todo gets moved
 
         getProjectCont()
@@ -124,17 +125,21 @@ dialog.addEventListener("close", () => {
             getProjectCont()[preProjectIndex].getAllTodo().indexOf(brokenTodo),
             1
           );
+          //added to the new project
         getProjectCont()[projectIndex].addTodo(...todoInput);
         getProjectCont()
           [projectIndex].getAllTodo()[0]
           .createSubtask(checklistArray);
       } else {
+        //if same project
+        //on that note, might as well implement the same as above no?
+        //just remove from the same project and add it back in? but i guess that changes it position
         brokenTodo.editTodo(...todoInput);
         getProjectCont()
           [projectIndex].getAllTodo()[0]
           .createSubtask(checklistArray);
       }
-    } else {
+    } else {//dialog wasnt closed from an edit
       getProjectCont()[projectIndex].addTodo(
         ...todoInput
       );
@@ -201,6 +206,7 @@ todosHolder.addEventListener("click", (e) => {
         return true;
       }
     }).dataset.index;
+    //toggles the state of the todo
     var toCheck = getActiveProject().getTodoCont()[index];
     toCheck.toggleState();
     updateScreen();
@@ -226,7 +232,6 @@ todosHolder.addEventListener("click", (e) => {
     var toCheckTodo = getActiveProject().getTodoCont()[todoIndex];
 
     toCheckTodo.getNewChecklist()[subIndex].toggleState();
-    console.log(toCheckTodo.getNewChecklist()[subIndex].getState());
     updateScreen();
   }
 });
@@ -256,14 +261,14 @@ doneDispCont.addEventListener("click", (e) => {
 
 //delete todo's
 todosHolder.addEventListener("click", (e) => {
-  var toDelTodo;
+  var toDelTodo;//holes the to be deleted todo
   if (e.target.classList.contains("del-but")) {
     if (confirm("Do you wanna delete this todo?")) {
       toDelTodo =
         getActiveProject().getTodoCont()[
           e.target.parentElement.parentElement.dataset.index
         ];
-      console.log(toDelTodo);
+      
       var projectIndex; //to get project index for both filter and projects
       getProjectCont().forEach((project) => {
         project.getAllTodo().forEach((item) => {
@@ -272,7 +277,7 @@ todosHolder.addEventListener("click", (e) => {
           }
         });
       });
-      console.log(getProjectCont()[projectIndex]);
+      
       getProjectCont()[projectIndex].removeTodo(toDelTodo);
       updateScreen();
     }
@@ -281,7 +286,7 @@ todosHolder.addEventListener("click", (e) => {
 
 //delete subtodos
 todosHolder.addEventListener("click", (e) => {
-  var toDelTodo;
+  var toDelTodo;//the todo that holds the subtask that is to be deleted
   if (e.target.classList.contains("sub-task-del")) {
     var shortArray = e.composedPath().slice(0, -2); //removes document and window
     var todoIndex; //stores the index of todo
@@ -388,10 +393,7 @@ aside.addEventListener("click", (e) => {
       deleteProject(getProjectCont()[e.target.parentElement.dataset.index]);
       setActiveProject(getProjectCont()[getProjectCont().length - 1]);
     }
-    //debugger
-    // getProjectCont().forEach((item) => {
-    //   console.log(item.getProjectName());
-    // });
+    
   }
 });
 
@@ -407,7 +409,6 @@ function store() {
 
     project.getAllTodo().forEach((todo, index) => {
       var checklistObj = [];
-      console.log(todo.getNewChecklist());
       todo.getNewChecklist().forEach((item, index) => {
         checklistObj[index] = {
           name: item.getTitle(),
@@ -465,7 +466,7 @@ function getData() {
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", () => {
   console.table(store());
-  //console.table(getData()[2].getAllTodo()[0].getNewChecklist());
+  
 });
 
 //show notes

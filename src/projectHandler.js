@@ -6,8 +6,10 @@ function getProjectCont() {
 }
 
 function project(projectName) {
-  //todos and completed todos the object holds
-  var allTodo = []
+  var allTodo = []//all todos are stored here then split into 
+  //their own cont depending on state
+
+  //you could do this directly on display time but this is just how it is
   var todoCont = [];
   var compCont = [];
 
@@ -44,7 +46,6 @@ function project(projectName) {
 
   function removeTodo(todoItem) {
     var todoIndex;
-    console.log("called")
     allTodo.forEach((item, index) => {
       if (item === todoItem) {
         todoIndex = index;
@@ -56,6 +57,7 @@ function project(projectName) {
  
 
   function verifyCheck() {
+    //sorts allTodo into their specific containers for displaying
       compCont.length = 0;
       todoCont.length = 0;
     allTodo.forEach((item) => {
@@ -104,13 +106,12 @@ var todayFilter = (function () {
     getTodoCont,
     getProjectName,
     getCompCont,
-    checkTodo,
-    uncheckTodo,
     verifyCheck,
     getAllTodo
   } = project("Today");
 
-  function getTodos(projectArray) {
+  function getTodos(projectArray) {//gets todos from all project htat 
+    //that match today's date
     getAllTodo().splice(0); //cleans array
     projectArray.forEach((project) => {
       project.getAllTodo().forEach((todo) => {
@@ -121,28 +122,12 @@ var todayFilter = (function () {
     });
   }
 
-  // function verifyCheck() {
-  //   //alltodo and then sliding todos down to todoCont and CompCOnt should be how projects actually work
-  //   //TODO
-  //   allTodo.forEach((item) => {
-  //     getCompCont().length = 0;
-  //     getTodoCont().length = 0;
-  //     if (item.getState() === true) {
-  //       getCompCont().push(item);
-  //     }else {
-  //       getTodoCont().push(item)
-  //     }
-  //   });
-  // }
-
   return {
     getTodoCont,
     getProjectName,
     getCompCont,
     getTodos,
     verifyCheck,
-    checkTodo,
-    uncheckTodo,
   };
 })();
 

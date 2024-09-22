@@ -7,10 +7,10 @@ function todo(
 ) {
   var newChecklistCont = []
   function createSubtask(checklist = [], state){
-    newChecklistCont.length = 0;
-    checklist.forEach((name) => {
+    newChecklistCont.length = 0;//clears it before adding again
+    checklist.forEach((name) => {//recieves names and states seperately
+      //states are sent from getData only for now, to retain teh state on closing and opening
       newChecklistCont.unshift(subtask(name, state))
-      console.log(newChecklistCont);
     })
     
   }
@@ -23,7 +23,7 @@ function todo(
   var dueDate = new Date(date);
   if (!date) {
     dueDate = null;
-  }
+  }//to make sure format doesnt act up, thats why the if
 
   function removeSubTask(index) {
     newChecklistCont.splice(index, 1);;
@@ -38,11 +38,11 @@ function todo(
     checked = state;
   }
   function toggleState() {
-    checked = !checked;
+    checked = !checked;//to change checkecd state
   }
   function getNotes() {
     if (!notes) {
-      return "";
+      return "";//to remove the null and replace it wiht ""
     }
     return notes;
   }
@@ -51,7 +51,8 @@ function todo(
   }
   function getPriority() {
     if (!priority) {
-      return "none";
+      return "none";//to set it as default
+      //not even sure i am using this anywayere lmao
     }
     return priority;
   }
@@ -69,7 +70,8 @@ function todo(
     priority = info;
   }
 
-  function editTodo(name, desc, date, label, checklist = []) {
+  function editTodo(name, desc, date, label) {
+    //when you edit, this is how data gets updated
     title = name;
     notes = desc;
     dueDate = new Date(date);
