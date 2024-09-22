@@ -216,7 +216,7 @@ var dialogHandler = (function () {
     priority.value = todo.getPriority();
     notes.value = todo.getNotes();
     project.value = projectIndex;
-    todo.getNewChecklist().forEach((item) => updateDiaChecklist(item));
+    todo.getNewChecklist().forEach((item) => updateDiaChecklist(item.getTitle()));
   }
   function updateDiaChecklist(value) {
     var subtask = document.createElement("div");
