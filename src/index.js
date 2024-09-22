@@ -84,6 +84,7 @@ const subCont = document.querySelector(".checklist-cont");
 checklistInput.addEventListener("keydown", (e) => {
   //prevents user from entering blank todos
   if (e.key === "Enter" && checklistInput.value !== "") {
+    console.log(checklistInput.value);
     dialogHandler.updateDiaChecklist(checklistInput.value);
     cleanInputBox(checklistInput);
   }
@@ -161,13 +162,21 @@ dialog.addEventListener("close", () => {
 // edit todos
 todosHolder.addEventListener("click", (e) => {
   if (e.target.classList.contains("edit-but")) {
+    console.log("called")
     editMode = true;
     dialog.showModal();
     dialogHandler.updateDiaProjects(getProjectCont()); //it works without second value-
     //as editTodoMatch below used projectvalue(index) to get the default option in dia
+    var index = e.composedPath().find((item) => {
+      //to get index
+      if (item.classList.contains("todo-item")) {
+        return true;
+      }
+    }).dataset.index;
+    
     brokenTodo =
       getActiveProject().getTodoCont()[
-        e.target.parentElement.parentElement.dataset.index
+        index
       ];
 
     var projectIndex; //to get project index for both filter and projects
@@ -235,9 +244,17 @@ todosHolder.addEventListener("click", (e) => {
     updateScreen();
   }
 });
-
+var i = false;
 //show done todo
 showDoneBut.addEventListener("click", (e) => {
+  if(i){
+    showDoneBut.textContent = "Show completed tasks";
+  }else{
+    showDoneBut.textContent = "Close completed tasks";
+  }
+  i = !i;
+
+
   doneDispCont.classList.toggle("show-done-disp-cont");
   if (doneDispCont.classList.contains("show-done-disp-cont")) {
     updateScreen();
@@ -264,9 +281,15 @@ todosHolder.addEventListener("click", (e) => {
   var toDelTodo;//holes the to be deleted todo
   if (e.target.classList.contains("del-but")) {
     if (confirm("Do you wanna delete this todo?")) {
+      var index = e.composedPath().find((item) => {
+        //to get index
+        if (item.classList.contains("todo-item")) {
+          return true;
+        }//should have made this into a function fr
+      }).dataset.index;
       toDelTodo =
         getActiveProject().getTodoCont()[
-          e.target.parentElement.parentElement.dataset.index
+          index
         ];
       
       var projectIndex; //to get project index for both filter and projects
