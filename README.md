@@ -22,3 +22,5 @@ to disable form submit on enter https://stackoverflow.com/a/51507806
 
 you could have the event listeners in index but make them call specific function not even as a callback 
 `addeventlistener("click", (e) => {functioncall();})`
+
+use class selectors, easier to edit and understand in css please

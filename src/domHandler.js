@@ -1,6 +1,6 @@
 import { format, isPast } from "date-fns";
 const todoDisplayCont = document.querySelector(".todo-disp-cont");
-const projectListCont = document.querySelector("aside");
+const projectListCont = document.querySelector(".project-cont");
 
 //clear the input box after things have been added in various input boxes
 function cleanInputBox(inputBox) {
@@ -39,21 +39,26 @@ var display = (function () {
       // if(item.getDueDate()){
       //   displayDate = format(item.getDueDate(), "DD/MM/YYYY");
       // }
-      todoItem.innerHTML = `<div class="todo-name-cont">
+      todoItem.innerHTML = `
           <input class = "checkbox" type="checkbox" />
-          <div class="todo-header">
+          
             <p>${item.getTitle()}</p>
-            <p class = "todo-notes">${item.getNotes()}</p>
-          <div class = "todo-sub-cont">
-    
-          </div>
-          </div>
-        </div>
+            
+         
+        
         <div class="options-cont">
           <p class="todo-date">${displayDate}</p>
-          <button class="edit-but">Edit</button>
-          <button class="del-but">X</button>
-        </div>`;
+          <div class="edit-but">
+            <svg class="edit-but" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path class = "edit-but" d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+          </div>
+          <div class="del-but">
+            <svg class="del-but" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000"><path class = "del-but" d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg>
+          </div>
+        </div>
+        <p class = "todo-notes">${item.getNotes()}</p>
+          <div class = "todo-sub-cont">
+    
+          </div>`;
       //priority color
       var bordCol;
       switch (item.getPriority()) {
@@ -73,9 +78,9 @@ var display = (function () {
       todoItem.style.borderLeft = `5px solid ${bordCol}`;
       //dueDate
       todoItem.style.color = fontCol;
-
-      //checklist
       todoDisplayCont.appendChild(todoItem);
+      //checklist
+      
       item.getNewChecklist().forEach((item, index) => {
         const subCont = todoItem.querySelector(".todo-sub-cont");
         const subItem = document.createElement("div");
@@ -86,8 +91,11 @@ var display = (function () {
           //to display as checked whenthe state of the subtask is checked
           const checkBox = subItem.querySelector(".sub-task-checkbox")
           checkBox.setAttribute("checked", true);
+          
         }
+        console.log(subCont);
         subCont.appendChild(subItem);
+        
       });
     });
   }
@@ -101,10 +109,10 @@ var display = (function () {
         const todoItem = document.createElement("div");
         todoItem.dataset.index = index;
         todoItem.className = "done-todo-item";
-        todoItem.innerHTML = `<div class="todo-name-cont">
+        todoItem.innerHTML = `
           <input type="checkbox" checked/>
           <p>${item.getTitle()}</p>
-        </div>`;
+        `;
         doneDispCont.appendChild(todoItem);
       });
     }
