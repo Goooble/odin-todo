@@ -16,8 +16,6 @@ import {
   todayFilter,
 } from "./projectHandler";
 
-
-
 var activeProject; //to know which project is currently on the main
 function getActiveProject() {
   return activeProject;
@@ -28,7 +26,7 @@ const quickAddCont = document.querySelector(".quick-add-cont");
 function updateScreen() {
   todayFilter.getTodos(getProjectCont());
   getActiveProject().verifyCheck();
-  
+
   if (getActiveProject() === todayFilter) {
     //removes quick input box
     quickAddCont.classList.add("today-filter-show");
@@ -47,7 +45,7 @@ function updateScreen() {
     getProjectCont().slice(0),
     getActiveProject().getCompCont().slice(0)
   );
-  store()
+  store();
 }
 
 function setActiveProject(project) {
@@ -94,7 +92,7 @@ var editMode = false; //to ensure the submit was done by an edit and not an add
 var brokenTodo;
 //this works for both editing and adding using the above to variables
 dialog.addEventListener("close", () => {
-  var checklistArray = [];
+  var checklistArray = []; //TODO get state as well
   if (dialog.returnValue === "Submit") {
     checklistArray = dialogHandler.getDiaChecklist();
     //to extract project index value seperately
@@ -126,16 +124,25 @@ dialog.addEventListener("close", () => {
             getProjectCont()[preProjectIndex].getAllTodo().indexOf(brokenTodo),
             1
           );
-        console.log(checklistArray);
         getProjectCont()[projectIndex].addTodo(...todoInput, checklistArray);
+        getProjectCont()
+          [projectIndex].getAllTodo()[0]
+          .createSubtask(checklistArray);
       } else {
         brokenTodo.editTodo(...todoInput, checklistArray);
+        getProjectCont()
+          [projectIndex].getAllTodo()[0]
+          .createSubtask(checklistArray);
       }
     } else {
       getProjectCont()[projectIndex].addTodo(
         ...todoInput,
         checklistArray.slice(0)
       );
+
+      getProjectCont()
+        [projectIndex].getAllTodo()[0]
+        .createSubtask(checklistArray);
     }
     updateScreen();
     cleanInputBox(inputBox);
@@ -196,7 +203,31 @@ todosHolder.addEventListener("click", (e) => {
       }
     }).dataset.index;
     var toCheck = getActiveProject().getTodoCont()[index];
-    getActiveProject().checkTodo(toCheck);
+    toCheck.toggleState();
+    updateScreen();
+  }
+});
+
+//check subtodo
+todosHolder.addEventListener("click", (e) => {
+  if (e.target.classList.contains("sub-task-checkbox")) {
+    var todoIndex = e.composedPath().find((item) => {
+      //to get todo index
+      if (item.classList.contains("todo-item")) {
+        return true;
+      }
+    }).dataset.index;
+    var subIndex = e.composedPath().find((item) => {
+      //to get sub index
+      if (item.classList.contains("sub-item")) {
+        return true;
+      }
+    }).dataset.index;
+
+    var toCheckTodo = getActiveProject().getTodoCont()[todoIndex];
+
+    toCheckTodo.getNewChecklist()[subIndex].toggleState();
+    console.log(toCheckTodo.getNewChecklist()[subIndex].getState());
     updateScreen();
   }
 });
@@ -218,7 +249,7 @@ doneDispCont.addEventListener("click", (e) => {
       }
     }).dataset.index;
     var toUncheck = getActiveProject().getCompCont()[index];
-    getActiveProject().uncheckTodo(toUncheck);
+    toUncheck.toggleState();
 
     updateScreen();
   }
@@ -369,8 +400,6 @@ aside.addEventListener("click", (e) => {
 getData();
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 
-
-
 function store() {
   localStorage.clear();
   var projectCont = [];
@@ -378,6 +407,14 @@ function store() {
     var todoContObj = [];
 
     project.getAllTodo().forEach((todo, index) => {
+      var checklistObj = [];
+      console.log(todo.getNewChecklist());
+      todo.getNewChecklist().forEach((item, index) => {
+        checklistObj[index] = {
+          name: item.getTitle(),
+          state: item.getState(),
+        };
+      });
       todoContObj[index] = {
         state: todo.getState(),
         title: todo.getTitle(),
@@ -385,6 +422,7 @@ function store() {
         dueDate: todo.getDueDate(),
         priority: todo.getPriority(),
         checklist: todo.getChecklistCont(),
+        checklistCont: checklistObj,
       };
     });
     projectCont[proIndex] = {
@@ -392,9 +430,8 @@ function store() {
       name: project.getProjectName(),
     };
   });
-
   localStorage.setItem("json", JSON.stringify(projectCont));
-  console.log("store")
+  return projectCont;
 }
 
 function getData() {
@@ -412,17 +449,26 @@ function getData() {
         item.checklist,
         item.state
       );
+
+      var checklistName = [];
+      var checklistState = [];
+      item.checklistCont.toReversed().forEach((subtask) => {
+        checklistName.push(subtask.name);
+        checklistState.push(subtask.state);
+      });
+      getProjectCont()
+        [index].getAllTodo()[0]
+        .createSubtask(checklistName, checklistState);
     });
   });
-  return data;
+  return getProjectCont();
 }
-
 
 //debugger
 const logger = document.querySelector(".logger");
 logger.addEventListener("click", () => {
-  getData();
-  console.table(data);
+  console.table(store());
+  //console.table(getData()[2].getAllTodo()[0].getNewChecklist());
 });
 
 //show notes

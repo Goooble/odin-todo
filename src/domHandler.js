@@ -28,14 +28,14 @@ var display = (function () {
       var displayDate = ""; //so that no duedates get displayed as empty string
       //and not as NaN
 
-      var fontCol = "black"
+      var fontCol = "black";
       if (item.getDueDate()) {
         displayDate = format(item.getDueDate(), "dd-MM-yyyy");
-        if(isPast(item.getDueDate())){
+        if (isPast(item.getDueDate())) {
           fontCol = "red";
         }
       }
-      
+
       // if(item.getDueDate()){
       //   displayDate = format(item.getDueDate(), "DD/MM/YYYY");
       // }
@@ -54,32 +54,49 @@ var display = (function () {
           <button class="edit-but">Edit</button>
           <button class="del-but">X</button>
         </div>`;
-        //priority color
-        var bordCol;
-        switch(item.getPriority()){
-          case "none": bordCol = "white";
+      //priority color
+      var bordCol;
+      switch (item.getPriority()) {
+        case "none":
+          bordCol = "white";
           break;
-          case "low": bordCol = "grey";
+        case "low":
+          bordCol = "grey";
           break;
-          case "medium": bordCol = "cyan";
+        case "medium":
+          bordCol = "cyan";
           break;
-          case "high": bordCol = "red";
+        case "high":
+          bordCol = "red";
           break;
-        }
-        todoItem.style.borderLeft = `5px solid ${bordCol}`;
-        //dueDate
-        todoItem.style.color = fontCol;
+      }
+      todoItem.style.borderLeft = `5px solid ${bordCol}`;
+      //dueDate
+      todoItem.style.color = fontCol;
 
-        //checklist
+      //checklist
       todoDisplayCont.appendChild(todoItem);
-      item.getChecklistCont().forEach((item, index) => {
+      item.getNewChecklist().forEach((item, index) => {
         const subCont = todoItem.querySelector(".todo-sub-cont");
         const subItem = document.createElement("div");
         subItem.className = "sub-item";
         subItem.dataset.index = index;
-        subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item}</p> <div><button class="sub-task-del">X</button>`;
+        subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item.getTitle()}</p> <div><button class="sub-task-del">X</button>`;
+        if (item.getState() === true) {
+          console.log("called")
+          const checkBox = subItem.querySelector(".sub-task-checkbox")
+          checkBox.setAttribute("checked", true);
+        }
         subCont.appendChild(subItem);
       });
+      // item.getChecklistCont().forEach((item, index) => {
+      //   const subCont = todoItem.querySelector(".todo-sub-cont");
+      //   const subItem = document.createElement("div");
+      //   subItem.className = "sub-item";
+      //   subItem.dataset.index = index;
+      //   subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item}</p> <div><button class="sub-task-del">X</button>`;
+      //   subCont.appendChild(subItem);
+      // });
     });
   }
 
@@ -152,11 +169,11 @@ var dialogHandler = (function () {
   const checklistInput = document.querySelector("#checklist-input");
   const checklistCont = document.querySelector(".checklist-cont");
 
-  function getDiaChecklist(){
+  function getDiaChecklist() {
     var array = [];
     Array.from(checklistCont.children).forEach((item) => {
-      array.push(item.textContent)
-    })
+      array.push(item.textContent);
+    });
     return array;
   }
 
@@ -207,7 +224,7 @@ var dialogHandler = (function () {
     priority.value = todo.getPriority();
     notes.value = todo.getNotes();
     project.value = projectIndex;
-    todo.getChecklistCont().forEach((item) => updateDiaChecklist(item))
+    todo.getChecklistCont().forEach((item) => updateDiaChecklist(item));
   }
   function updateDiaChecklist(value) {
     var subtask = document.createElement("div");
@@ -222,7 +239,7 @@ var dialogHandler = (function () {
     updateDiaProjects,
     matchInputBox,
     updateDiaChecklist,
-    getDiaChecklist
+    getDiaChecklist,
   };
 })();
 

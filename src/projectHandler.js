@@ -53,12 +53,7 @@ function project(projectName) {
     allTodo.splice(todoIndex, 1);
   }
 
-  function checkTodo(todo) {
-    todo.setState(true);
-  }
-  function uncheckTodo(todo) {
-    todo.setState(false);
-  }
+ 
 
   function verifyCheck() {
       compCont.length = 0;
@@ -96,8 +91,6 @@ function project(projectName) {
     verifyCheck,
     getCompCont,
     sortTodo,
-    checkTodo,
-    uncheckTodo,
     getAllTodo
   };
 }

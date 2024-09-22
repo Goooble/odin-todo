@@ -6,6 +6,20 @@ function todo(
   checklistCont = [],
   state = false
 ) {
+  var newChecklistCont = []
+  function createSubtask(checklist = [], state = []){
+    newChecklistCont.length = 0;
+    checklist.forEach((name, index) => {
+      newChecklistCont.unshift(subtask(name, state[index]))
+    
+    })
+    
+  }
+
+  function getNewChecklist(){
+    return newChecklistCont;
+  }
+
   var checked = state;
   var dueDate = new Date(date);
   if (!date) {
@@ -24,8 +38,11 @@ function todo(
   function getState() {
     return checked;
   }
-  function setState(bool) {
-    checked = bool;
+  function setState(state){
+    checked = state;
+  }
+  function toggleState() {
+    checked = !checked;
   }
   function getNotes() {
     if (!notes) {
@@ -66,7 +83,11 @@ function todo(
     priority = label;
     checklistCont = checklist.slice(0);
   }
+
+
+
   return {
+    setState,
     getState,
     getTitle,
     getNotes,
@@ -77,11 +98,21 @@ function todo(
     setDueDate,
     setPriority,
     editTodo,
-    setState,
+    toggleState,
     getChecklistCont,
     removeSubTask,
+    createSubtask,
+    getNewChecklist
   };
 }
+
+function subtask(title, state = false){
+  var {getTitle, getState, toggleState, setState} = todo(title, null, null, null, null, state)
+  setState(state);
+  return {getTitle, getState, toggleState}
+}
+
+
 
 function createTodo(title, notes, date, priority, checklist, state) {
   return todo(title, notes, date, priority, checklist, state);
