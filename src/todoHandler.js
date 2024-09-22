@@ -5,7 +5,7 @@ function todo(
   priority = "none",
   state = false
 ) {
-  var newChecklistCont = []
+  var newChecklistCont = []//just forgot to remove the "new", too lazy
   function createSubtask(checklist = [], state){
     newChecklistCont.length = 0;//clears it before adding again
     checklist.forEach((name) => {//recieves names and states seperately
@@ -20,11 +20,14 @@ function todo(
   }
 
   var checked = state;
-  var dueDate = new Date(date);
+  
+  var dueDate;
   if (!date) {
     dueDate = null;
+  }else{
+    dueDate = new Date(date+"T23:59");
   }//to make sure format doesnt act up, thats why the if
-
+console.log(dueDate)
   function removeSubTask(index) {
     newChecklistCont.splice(index, 1);;
   }
@@ -74,7 +77,7 @@ function todo(
     //when you edit, this is how data gets updated
     title = name;
     notes = desc;
-    dueDate = new Date(date);
+    dueDate = new Date(date+"T23:59");//otherwise, due date doesnt work well
     if (!date) {
       dueDate = null;
     }

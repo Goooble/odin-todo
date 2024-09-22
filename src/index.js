@@ -356,22 +356,6 @@ addProjectInput.addEventListener("focusout", () => {
 //default
 addProject("Inbox");
 
-addProject("School");
-
-addProject("Work");
-getProjectCont()[2].addTodo(
-  "inbox - hello",
-  "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus animi consequuntur repudiandae debitis perspiciatis molestias quibusdam ad molestiae fuga libero. Maxime accusamus quisquam illum veniam expedita omnis enim eligendi sapiente?",
-  "2024-09-20"
-);
-getProjectCont()[2].addTodo("inbox - wassup", "", undefined, "none", [
-  "holy",
-  "inception",
-]);
-getProjectCont()[2].addTodo("school - hello", "");
-getProjectCont()[2].addTodo("school - wassup", "");
-getProjectCont()[2].addTodo("work - hello", "");
-getProjectCont()[2].addTodo("work - wassup", "");
 
 //to select a project to display on the main screen
 
@@ -442,10 +426,12 @@ function store() {
         state: todo.getState(),
         title: todo.getTitle(),
         notes: todo.getNotes(),
-        dueDate: todo.getDueDate(),
+        dueDate: todo.getDueDate().toISOString().slice(0,10),
+        //all of this date stuff to append +"T23:59" at the end while adding todo
         priority: todo.getPriority(),
         checklistCont: checklistObj
       };
+      
     });
     projectCont[proIndex] = {
       allTodo: todoContObj,
