@@ -29,7 +29,7 @@ function todo(
     return checklistCont;
   }
   function removeSubTask(index) {
-    checklistCont.splice(index, 1);
+    newChecklistCont.splice(index, 1);
     console.log(checklistCont);
   }
   function getTitle() {
