@@ -405,7 +405,7 @@ aside.addEventListener("click", (e) => {
 //default
 addProject("Inbox");
 getProjectCont()[0].addTodo("example", "important stuff", "2025-12-30", "none")
-// getData();
+getData();
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 
 function store() {
