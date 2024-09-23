@@ -26,7 +26,7 @@ const quickAddCont = document.querySelector(".quick-add-cont");
 function updateScreen() {
   todayFilter.getTodos(getProjectCont());
   getActiveProject().verifyCheck();
-  
+
   if (getActiveProject() === todayFilter) {
     //removes quick input box
     quickAddCont.classList.add("today-filter-show");
@@ -43,7 +43,7 @@ function updateScreen() {
     getActiveProject().getProjectName(),
     getActiveProject().getTodoCont().slice(0),
     getProjectCont().slice(0),
-    getActiveProject().getCompCont().slice(0)
+    getActiveProject().getCompCont().slice(0),
   );
   store();
 }
@@ -66,11 +66,10 @@ const checklistInput = document.querySelector("#checklist-input");
 
 //opens dialog
 addTodoBut.addEventListener("click", () => {
-
   dialog.showModal();
   dialogHandler.updateDiaProjects(
     getProjectCont(),
-    getProjectCont().indexOf(getActiveProject())
+    getProjectCont().indexOf(getActiveProject()),
   );
   dialogHandler.matchInputBox();
 });
@@ -117,16 +116,16 @@ dialog.addEventListener("close", () => {
         getProjectCont()[projectIndex] !== getProjectCont()[preProjectIndex]
       ) {
         //if preproject and selected project are different, moving to a diffrent project and removing it fromthe current
-        
+
         //if some other project is selected, the todo gets moved
 
         getProjectCont()
           [preProjectIndex].getAllTodo()
           .splice(
             getProjectCont()[preProjectIndex].getAllTodo().indexOf(brokenTodo),
-            1
+            1,
           );
-          //added to the new project
+        //added to the new project
         getProjectCont()[projectIndex].addTodo(...todoInput);
         getProjectCont()
           [projectIndex].getAllTodo()[0]
@@ -140,10 +139,9 @@ dialog.addEventListener("close", () => {
           [projectIndex].getAllTodo()[0]
           .createSubtask(checklistArray);
       }
-    } else {//dialog wasnt closed from an edit
-      getProjectCont()[projectIndex].addTodo(
-        ...todoInput
-      );
+    } else {
+      //dialog wasnt closed from an edit
+      getProjectCont()[projectIndex].addTodo(...todoInput);
 
       getProjectCont()
         [projectIndex].getAllTodo()[0]
@@ -172,11 +170,8 @@ todosHolder.addEventListener("click", (e) => {
         return true;
       }
     }).dataset.index;
-    
-    brokenTodo =
-      getActiveProject().getTodoCont()[
-        index
-      ];
+
+    brokenTodo = getActiveProject().getTodoCont()[index];
 
     var projectIndex; //to get project index for both filter and projects
     getProjectCont().forEach((project) => {
@@ -246,13 +241,12 @@ todosHolder.addEventListener("click", (e) => {
 var i = false;
 //show done todo
 showDoneBut.addEventListener("click", (e) => {
-  if(i){
+  if (i) {
     showDoneBut.textContent = "Show completed tasks ▼";
-  }else{
+  } else {
     showDoneBut.textContent = "Close completed tasks ▲";
   }
   i = !i;
-
 
   doneDispCont.classList.toggle("show-done-disp-cont");
   if (doneDispCont.classList.contains("show-done-disp-cont")) {
@@ -277,20 +271,17 @@ doneDispCont.addEventListener("click", (e) => {
 
 //delete todo's
 todosHolder.addEventListener("click", (e) => {
-  var toDelTodo;//holes the to be deleted todo
+  var toDelTodo; //holes the to be deleted todo
   if (e.target.classList.contains("del-but")) {
     if (confirm("Do you wanna delete this todo?")) {
       var index = e.composedPath().find((item) => {
         //to get index
         if (item.classList.contains("todo-item")) {
           return true;
-        }//should have made this into a function fr
+        } //should have made this into a function fr
       }).dataset.index;
-      toDelTodo =
-        getActiveProject().getTodoCont()[
-          index
-        ];
-      
+      toDelTodo = getActiveProject().getTodoCont()[index];
+
       var projectIndex; //to get project index for both filter and projects
       getProjectCont().forEach((project) => {
         project.getAllTodo().forEach((item) => {
@@ -299,7 +290,7 @@ todosHolder.addEventListener("click", (e) => {
           }
         });
       });
-      
+
       getProjectCont()[projectIndex].removeTodo(toDelTodo);
       updateScreen();
     }
@@ -308,7 +299,7 @@ todosHolder.addEventListener("click", (e) => {
 
 //delete subtodos
 todosHolder.addEventListener("click", (e) => {
-  var toDelTodo;//the todo that holds the subtask that is to be deleted
+  var toDelTodo; //the todo that holds the subtask that is to be deleted
   if (e.target.classList.contains("sub-task-del")) {
     var shortArray = e.composedPath().slice(0, -2); //removes document and window
     var todoIndex; //stores the index of todo
@@ -351,9 +342,6 @@ addProjectInput.addEventListener("keydown", (e) => {
 addProjectInput.addEventListener("focusout", () => {
   toggleInput();
 });
-
-
-
 
 //to select a project to display on the main screen
 
@@ -398,13 +386,12 @@ aside.addEventListener("click", (e) => {
       deleteProject(getProjectCont()[e.target.parentElement.dataset.index]);
       setActiveProject(getProjectCont()[getProjectCont().length - 1]);
     }
-    
   }
 });
 
 //default
 addProject("Inbox");
-getProjectCont()[0].addTodo("example", "important stuff", "2025-12-30", "none")
+getProjectCont()[0].addTodo("example", "important stuff", "2025-12-30", "none");
 getData();
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 
@@ -423,8 +410,9 @@ function store() {
         };
       });
       var date = todo.getDueDate();
-      if(todo.getDueDate()){//toISOstring starts throwing errors if its date is null
-        date = todo.getDueDate().toISOString().slice(0,10);
+      if (todo.getDueDate()) {
+        //toISOstring starts throwing errors if its date is null
+        date = todo.getDueDate().toISOString().slice(0, 10);
       }
       todoContObj[index] = {
         state: todo.getState(),
@@ -433,9 +421,8 @@ function store() {
         dueDate: date,
         //all of this date stuff to append +"T23:59" at the end while adding todo
         priority: todo.getPriority(),
-        checklistCont: checklistObj
+        checklistCont: checklistObj,
       };
-      
     });
     projectCont[proIndex] = {
       allTodo: todoContObj,
@@ -458,7 +445,7 @@ function getData() {
         item.notes,
         item.dueDate,
         item.priority,
-        item.state
+        item.state,
       );
 
       var checklistName = [];
@@ -474,7 +461,6 @@ function getData() {
   });
   return getProjectCont();
 }
-
 
 //show notes
 const todoHead = document.querySelector(".todo-header");

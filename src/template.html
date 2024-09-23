@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -60,54 +60,44 @@
           style="display: none"
           aria-hidden="true"
         ></button>
-        
-          <label for="title">Name:</label>
+
+        <label for="title">Name:</label>
+        <input type="text" id="title" placeholder="Task" required />
+
+        <div>
+          <!-- <label for="checklist-input">Subtasks:</label> -->
+          <div class="checklist-cont"></div>
           <input
             type="text"
-            id="title"
-            placeholder="Task"
-            required
+            id="checklist-input"
+            placeholder="Press enter to add Subtask"
           />
-          
-          <div>
-            <!-- <label for="checklist-input">Subtasks:</label> -->
-            <div class="checklist-cont"></div>
-            <input
-              type="text"
-              id="checklist-input"
-              placeholder="Press enter to add Subtask"
-            />
-            
-          </div>
-        
-        
-          <label for="date">Due Date: </label>
-          <input type="date" id="date" />
-          <label for="priority">Priority:</label>
-          <select name="priority" id="priority">
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-            <option value="none" selected>None</option>
-          </select>
-          <label for="project">Project:</label>
-          <select name="project" class="project-select" id="project">
-            <!-- even selected would need to be updated every round -->
-            <!-- set this up using js including inbox to use index in value-->
-          </select>
-        
-        
+        </div>
+
+        <label for="date">Due Date: </label>
+        <input type="date" id="date" />
+        <label for="priority">Priority:</label>
+        <select name="priority" id="priority">
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+          <option value="none" selected>None</option>
+        </select>
+        <label for="project">Project:</label>
+        <select name="project" class="project-select" id="project">
+          <!-- even selected would need to be updated every round -->
+          <!-- set this up using js including inbox to use index in value-->
+        </select>
+
         <label for="notes">Notes:</label>
         <textarea
           type="text"
           id="notes"
           placeholder="Enter additional information"
         ></textarea>
-      
-      
+
         <input type="submit" formmethod="dialog" value="Submit" />
         <input type="reset" class="close-but" value="Close" />
-      
       </form>
     </dialog>
   </body>
