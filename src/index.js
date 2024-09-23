@@ -85,7 +85,6 @@ const subCont = document.querySelector(".checklist-cont");
 checklistInput.addEventListener("keydown", (e) => {
   //prevents user from entering blank todos
   if (e.key === "Enter" && checklistInput.value !== "") {
-    console.log(checklistInput.value);
     dialogHandler.updateDiaChecklist(checklistInput.value);
     cleanInputBox(checklistInput);
   }
@@ -163,7 +162,6 @@ dialog.addEventListener("close", () => {
 // edit todos
 todosHolder.addEventListener("click", (e) => {
   if (e.target.classList.contains("edit-but")) {
-    console.log("called")
     editMode = true;
     dialog.showModal();
     dialogHandler.updateDiaProjects(getProjectCont()); //it works without second value-
@@ -426,7 +424,6 @@ function store() {
       });
       var date = todo.getDueDate();
       if(todo.getDueDate()){//toISOstring starts throwing errors if its date is null
-        console.log("called");
         date = todo.getDueDate().toISOString().slice(0,10);
       }
       todoContObj[index] = {
