@@ -212,24 +212,20 @@ header .quick-add-cont{
     gap: 10px;
 }
 
-dialog{
-    margin: auto;
-}
-dialog form{
-    display: flex;
-    flex-direction: column;
-}
+
 
 main{
     display: flex;
     flex-direction: column;
     gap: 100px;
 }
-.todo-disp-cont,.done-todo-section .show-done-disp-cont{
+.todo-disp-cont, .show-done-disp-cont, .done-todo-section{
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
+
+
 
 .todo-item, .done-todo-item{
     background-color: #FFF;
@@ -249,12 +245,11 @@ main{
     font-size: 1.2rem;
     align-items: center;
     grid-auto-flow: row;
+    /* grid-template-rows: min-content min-content min-content; */
+    
 }
 
-.todo-name-cont{
-    display: flex;
-    gap: 20px;
-}
+
 
 .todo-item>input{
     width: 20px;
@@ -268,7 +263,7 @@ main{
     font-size: 1rem;
     justify-self: right;
     height: min-content;
-    align-items: center;
+    align-items: end;
 }
 
 .del-but, .edit-but{
@@ -281,6 +276,10 @@ div.del-but, div.edit-but{
     height: 35px;
 }
 
+.del-but, .edit-but:hover{
+    cursor:grab;
+}
+
 .todo-header{
     display: flex;
     flex-direction: column;
@@ -288,12 +287,14 @@ div.del-but, div.edit-but{
 
 .todo-notes{
     font-size: 0.8rem;
-    color: rgb(30, 30, 30);
-    width: 250px;
+    color: rgb(0, 0, 0, 0.7);
+    width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     grid-column: 2;
+    grid-row: 3/4;
+
 }
 
 .show-notes{
@@ -302,9 +303,21 @@ div.del-but, div.edit-but{
     white-space:normal;
     overflow:visible;
     text-overflow: none;
+    
 }
 
+.show-done{
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    /* background-color: rgb(255, 255, 255, 0.5); */
+    background-color: #0F1108;
+    color: white;
+}
 
+.show-done{
+    cursor: grab;
+}
 
 .done-todo-item{
     text-decoration:line-through;
@@ -332,6 +345,14 @@ div .show-done-disp-cont{
 header div.today-filter-show{
     display: none;
 }
+.todo-sub-cont{
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0px;
+}
+
 
 .subtask-item{
     display: flex;
@@ -339,8 +360,48 @@ header div.today-filter-show{
 }
 
 .sub-item{
-    display: flex;
-    color: rgb(38, 38, 38);
+    width: max(300px,50%);
+    display: grid;
+    color: black;
     font-size:0.8rem;
+    grid-template-columns: 25px 1fr 30px;
+    align-items: center;
     gap: 10px;
+    background-color: rgb(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.sub-item input{
+    width: 15px;
+    height: 15px;
+}
+
+.sub-task-del{
+    width :26px;
+    border-radius: 50%;
+    border: none;
+
+}
+.sub-task-del:hover{
+    cursor: grab;
+
+}
+
+input[type="checkbox"]{
+    cursor: grab;
+}
+
+/* dialog */
+dialog{
+    margin: auto;
+    width: 500px;
+}
+dialog form{
+    display: flex;
+    flex-direction: column;
+}
+
+textarea{
+    resize: vertical;
 }

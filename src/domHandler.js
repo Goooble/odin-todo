@@ -57,9 +57,7 @@ var display = (function () {
           </div>
         </div>
         <p class = "todo-notes">${item.getNotes()}</p>
-          <div class = "todo-sub-cont">
-    
-          </div>`;
+          `;
       //priority color
       var bordCol;
       switch (item.getPriority()) {
@@ -80,14 +78,19 @@ var display = (function () {
       //dueDate
       todoItem.style.color = fontCol;
       todoDisplayCont.appendChild(todoItem);
+
       //checklist
-      
+      const subCont = document.createElement("div");
+        subCont.className = "todo-sub-cont";
+        if(item.getNewChecklist().length !== 0){
+          todoItem.appendChild(subCont);
+        }
       item.getNewChecklist().forEach((item, index) => {
-        const subCont = todoItem.querySelector(".todo-sub-cont");
+        // const subCont = todoItem.querySelector(".todo-sub-cont");
         const subItem = document.createElement("div");
         subItem.className = "sub-item";
         subItem.dataset.index = index;
-        subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item.getTitle()}</p> <div><button class="sub-task-del">X</button>`;
+        subItem.innerHTML = `<input class="sub-task-checkbox" type = "checkbox" /> <p>${item.getTitle()}</p> <button class="sub-task-del">x</button>`;
         if (item.getState() === true) {
           //to display as checked whenthe state of the subtask is checked
           const checkBox = subItem.querySelector(".sub-task-checkbox")
@@ -96,6 +99,7 @@ var display = (function () {
         }
         console.log(subCont);
         subCont.appendChild(subItem);
+        
         
       });
     });

@@ -248,9 +248,9 @@ var i = false;
 //show done todo
 showDoneBut.addEventListener("click", (e) => {
   if(i){
-    showDoneBut.textContent = "Show completed tasks";
+    showDoneBut.textContent = "Show completed tasks ▼";
   }else{
-    showDoneBut.textContent = "Close completed tasks";
+    showDoneBut.textContent = "Close completed tasks ▲";
   }
   i = !i;
 
@@ -353,8 +353,7 @@ addProjectInput.addEventListener("focusout", () => {
   toggleInput();
 });
 
-//default
-addProject("Inbox");
+
 
 
 //to select a project to display on the main screen
@@ -405,6 +404,8 @@ aside.addEventListener("click", (e) => {
 });
 
 //default
+addProject("Inbox");
+getProjectCont()[0].addTodo("example", "important stuff", "2025-12-30", "none")
 getData();
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 
