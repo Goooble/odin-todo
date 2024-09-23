@@ -66,6 +66,7 @@ const checklistInput = document.querySelector("#checklist-input");
 
 //opens dialog
 addTodoBut.addEventListener("click", () => {
+
   dialog.showModal();
   dialogHandler.updateDiaProjects(
     getProjectCont(),
@@ -406,7 +407,7 @@ aside.addEventListener("click", (e) => {
 //default
 addProject("Inbox");
 getProjectCont()[0].addTodo("example", "important stuff", "2025-12-30", "none")
-getData();
+// getData();
 setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 
 function store() {
@@ -423,11 +424,16 @@ function store() {
           state: item.getState(),
         };
       });
+      var date = todo.getDueDate();
+      if(todo.getDueDate()){//toISOstring starts throwing errors if its date is null
+        console.log("called");
+        date = todo.getDueDate().toISOString().slice(0,10);
+      }
       todoContObj[index] = {
         state: todo.getState(),
         title: todo.getTitle(),
         notes: todo.getNotes(),
-        dueDate: todo.getDueDate().toISOString().slice(0,10),
+        dueDate: date,
         //all of this date stuff to append +"T23:59" at the end while adding todo
         priority: todo.getPriority(),
         checklistCont: checklistObj
@@ -472,12 +478,6 @@ function getData() {
   return getProjectCont();
 }
 
-//debugger
-const logger = document.querySelector(".logger");
-logger.addEventListener("click", () => {
-  console.table(store());
-  
-});
 
 //show notes
 const todoHead = document.querySelector(".todo-header");

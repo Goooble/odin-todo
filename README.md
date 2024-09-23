@@ -24,3 +24,5 @@ you could have the event listeners in index but make them call specific function
 `addeventlistener("click", (e) => {functioncall();})`
 
 use class selectors, easier to edit and understand in css please
+
+new date("string") without time generates date with time set as 05:30 in this timezone

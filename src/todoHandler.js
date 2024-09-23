@@ -27,7 +27,7 @@ function todo(
   }else{
     dueDate = new Date(date+"T23:59");
   }//to make sure format doesnt act up, thats why the if
-console.log(dueDate)
+
   function removeSubTask(index) {
     newChecklistCont.splice(index, 1);;
   }

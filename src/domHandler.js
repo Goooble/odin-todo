@@ -34,7 +34,6 @@ var display = (function () {
         if (isPast(item.getDueDate())) {
           fontCol = "red";
         }
-        console.log(item.getDueDate())
       }
 
       // if(item.getDueDate()){
