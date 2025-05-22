@@ -390,10 +390,6 @@ aside.addEventListener("click", (e) => {
 });
 
 //default
-addProject("Inbox");
-getProjectCont()[0].addTodo("example", "important stuff", "2025-12-30", "none");
-getData();
-setActiveProject(getProjectCont()[getProjectCont().length - 1]);
 
 function store() {
   localStorage.clear();
@@ -433,10 +429,30 @@ function store() {
   return projectCont;
 }
 
-function getData() {
+function getjson() {
   var data;
   getProjectCont().length = 0;
   data = JSON.parse(localStorage.getItem("json"));
+  return data;
+}
+
+getData();
+
+function getData() {
+  var data = getjson();
+  if (data === null) {
+    console.group("here");
+    addProject("Inbox");
+    getProjectCont()[0].addTodo(
+      "example",
+      "important stuff",
+      "2025-12-30",
+      "none",
+    );
+
+    setActiveProject(getProjectCont()[getProjectCont().length - 1]);
+    store();
+  }
   data.toReversed().forEach((item, index) => {
     addProject(item.name);
     item.allTodo.toReversed().forEach((item) => {
